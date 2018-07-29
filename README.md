@@ -1,0 +1,3 @@
+- nefunguje mi import, cakal by som, ze uz pojde
+- preco premenne s pottrznikom
+- preco gettery a settery su take divne? 
