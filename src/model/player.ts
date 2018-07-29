@@ -9,11 +9,11 @@ let ARROW_MAP = {
 
 export class Player {
 
+    public static readonly _width = 80;
+
+    public static readonly _height = 15;
+
     private _ctx;
-
-    private _width: number;
-
-    private _height: number;
 
     private _color: string;
 
@@ -24,26 +24,9 @@ export class Player {
     constructor(ctx, position: Position) {
         this._ctx = ctx;
         this._position = position;
-        this._width = 80;
-        this._height = 15;
-        this._color = 'black';
-        this._speed = 1;
-    }
-
-    get width(): number {
-        return this.width;
-    }
-
-    set width(value: number) {
-        this.width = value;
-    }
-
-    get height(): number {
-        return this.height;
-    }
-
-    set height(value: number) {
-        this.height = value;
+        this._color = 'orange';
+        this._speed = 15;
+        document.addEventListener('keydown', this.move.bind(this));
     }
 
     get color(): string {
@@ -56,22 +39,20 @@ export class Player {
 
     draw() {
         this._ctx.fillStyle = this._color;
-        this._ctx.fillRect(this._position.x, this._position.y, this._width, this._height);
+        this._ctx.fillRect(this._position.x, this._position.y, Player._width, Player._height);
     }
 
-    // move(e) {
-    //
-    //     console.log(this._position.x);
-    //
-    //     let arrow = ARROW_MAP[e.keyCode];
-    //
-    //     if (arrow === 'left') {
-    //         this._position.x -= this._speed;
-    //     }
-    //     if (arrow === 'right') {
-    //         this._position.x += this._speed;
-    //     }
-    //
-    // }
+    move(e) {
+
+        let arrow = ARROW_MAP[e.keyCode];
+
+        if (arrow === 'left') {
+            this._position.x -= this._speed;
+        }
+        if (arrow === 'right') {
+            this._position.x += this._speed;
+        }
+
+    }
 
 }

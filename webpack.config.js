@@ -3,6 +3,7 @@ module.exports = {
     devtool: "inline-source-map",
     entry: "./index.ts",
     output: {
+        publicPath: "dist",
         filename: "./index.js"
     },
     resolve: {

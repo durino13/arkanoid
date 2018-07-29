@@ -9,6 +9,8 @@ export class ArkanoidGame {
 
     protected _playerPosition: Position;
 
+    protected _player: Player;
+
     constructor() {
         this.init();
     }
@@ -23,7 +25,8 @@ export class ArkanoidGame {
         this._canvas.height = 900;
 
         // Player position
-        this._playerPosition = new Position(this._canvas.width / 2, 885);
+        this._playerPosition = new Position(this._canvas.width / 2 - Player._width / 2, this._canvas.height - Player._height);
+        this._player = new Player(this._ctx, this._playerPosition);
     }
 
     play() {
@@ -32,9 +35,7 @@ export class ArkanoidGame {
         this.clear();
 
         // Start the game
-        this._playerPosition.x += 1;
-        let player = new Player(this._ctx, this._playerPosition);
-        player.draw();
+        this._player.draw();
 
         // Request to refresh the _canvas
         requestAnimationFrame(this.play.bind(this));
