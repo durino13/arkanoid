@@ -31,11 +31,11 @@ export class Ball extends IGameObject {
     }
 
     draw() {
-        this.move();
         this._ctx.beginPath();
         this._ctx.arc(this._position.x, this._position.y, Ball._radius, 0, 2*Math.PI, false);
         this._ctx.fillStyle = this._color;
         this._ctx.fill();
+        this.move();
     }
 
     move() {
@@ -44,19 +44,30 @@ export class Ball extends IGameObject {
             this._position.y -= this._speed;
         } else {
 
-            this._direction = 'go_down';
-            this._position.y += this._speed;
+            this.bounceDown();
 
-            this._world.getObjects().forEach(function(gameObject) {
-                console.log(gameObject);
+            this._world.getObjects().forEach(gameObject => {
                 if (!(gameObject instanceof Ball)) {
                     if (CollisionDetector.isColision(this, gameObject)) {
-                        console.log(gameObject.constructor.name);
+
+                        if (gameObject instanceof Player) {
+                            this.bounceUp();
+                        }
+
                     }
                 }
-
             });
         }
+    }
+
+    private bounceUp() {
+        this._direction = 'go_up';
+        this._position.y -= this._speed;
+    }
+
+    private bounceDown() {
+        this._direction = 'go_down';
+        this._position.y += this._speed;
     }
 
     height() {

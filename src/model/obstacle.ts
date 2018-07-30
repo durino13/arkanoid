@@ -6,8 +6,6 @@ export class Obstacle extends IGameObject{
 
     protected _ctx;
 
-    protected _position;
-
     constructor(ctx, position: Position) {
         super();
         this._ctx = ctx;
