@@ -1,4 +1,5 @@
 import { Position } from './position';
+import { IGameObject } from './game_object';
 
 let ARROW_MAP = {
     37: 'left',
@@ -7,7 +8,7 @@ let ARROW_MAP = {
     38: 'down'
 };
 
-export class Player {
+export class Player extends IGameObject {
 
     public static readonly _width = 80;
 
@@ -17,24 +18,15 @@ export class Player {
 
     private _color: string;
 
-    private _position: Position;
-
     private _speed: number;
 
     constructor(ctx, position: Position) {
+        super();
         this._ctx = ctx;
         this._position = position;
         this._color = 'orange';
         this._speed = 15;
         document.addEventListener('keydown', this.move.bind(this));
-    }
-
-    get color(): string {
-        return this.color;
-    }
-
-    set color(value: string) {
-        this.color = value;
     }
 
     draw() {
@@ -53,6 +45,14 @@ export class Player {
             this._position.x += this._speed;
         }
 
+    }
+
+    height() {
+        return Player._height;
+    }
+
+    width() {
+        return Player._width;
     }
 
 }
