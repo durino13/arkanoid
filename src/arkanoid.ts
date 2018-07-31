@@ -17,7 +17,9 @@ export class ArkanoidGame {
 
     protected _ball: Ball;
 
-    protected _obstacle: Obstacle;
+    protected _obstacleBottom: Obstacle;
+
+    protected _obstacleTop: Obstacle;
 
     constructor() {
         this.init();
@@ -44,12 +46,16 @@ export class ArkanoidGame {
         this._ball = new Ball(this._ctx, ballPos, this._world);
 
         // Screen bottom
-        let obstaclePos = new Position(0, Playground._height - 1);
-        this._obstacle = new Obstacle(this._ctx, obstaclePos);
+        let obstacleBottomPos = new Position(0, Playground._height - 1);
+        this._obstacleBottom = new Obstacle(this._ctx, obstacleBottomPos);
+
+        let obstacleTopPos = new Position(0, 0);
+        this._obstacleTop = new Obstacle(this._ctx, obstacleTopPos);
 
         // Add objects into the world
         this._world.addObject(this._player);
-        this._world.addObject(this._obstacle);
+        this._world.addObject(this._obstacleBottom);
+        this._world.addObject(this._obstacleTop);
         this._world.addObject(this._ball);
     }
 

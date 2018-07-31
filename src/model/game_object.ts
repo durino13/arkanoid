@@ -10,12 +10,18 @@ export abstract class IGameObject {
 
     abstract draw();
 
+    abstract width();
+
+    abstract height();
+
+    abstract hit();
+
     get position(): Position {
         return this._position;
     }
 
-    abstract width();
-
-    abstract height();
+    set position(position: Position) {
+        this._position = position;
+    }
     
 }

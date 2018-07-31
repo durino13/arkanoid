@@ -18,8 +18,12 @@ export class Obstacle extends IGameObject{
         this._ctx.fillRect(this._position.x, this._position.y, this.width(), this.height());
     }
 
+    hit() {
+        console.log('I got hit');
+    }
+
     height() {
-        return 10;
+        return 1;
     }
 
     width() {

@@ -47,6 +47,9 @@ export class Player extends IGameObject {
 
     }
 
+    hit() {
+    }
+
     height() {
         return Player._height;
     }

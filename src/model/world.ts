@@ -3,6 +3,8 @@ import { CollisionDetector } from './collision_detector';
 
 export class World {
 
+    protected gameOver: false;
+
     protected gameObjects: Array<IGameObject> = [];
 
     addObject(object: IGameObject) {
@@ -14,9 +16,11 @@ export class World {
     }
 
     draw() {
-        this.gameObjects.forEach(function(object) {
-            object.draw();
-        })
+        if (!this.gameOver) {
+            this.gameObjects.forEach(function(object) {
+                object.draw();
+            })
+        }
     }
 
     detectCollision() {

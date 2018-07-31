@@ -3,6 +3,7 @@ import { Player } from './player';
 import { CollisionDetector } from './collision_detector';
 import { IGameObject } from './game_object';
 import { World } from './world';
+import { Obstacle } from './obstacle';
 
 export class Ball extends IGameObject {
 
@@ -14,7 +15,7 @@ export class Ball extends IGameObject {
 
     protected _position;
 
-    protected _direction;
+    protected _angle;
 
     protected _color;
 
@@ -25,49 +26,55 @@ export class Ball extends IGameObject {
         this._ctx = ctx;
         this._position = position;
         this._color = 'blue';
-        this._speed = 1;
-        this._direction = 'go_up';
+        this._speed = 5;
+        this._angle = 100;
         this._world = world;
     }
 
     draw() {
         this._ctx.beginPath();
-        this._ctx.arc(this._position.x, this._position.y, Ball._radius, 0, 2*Math.PI, false);
+        // this._ctx.arc(this._position.x, this._position.y, Ball._radius, 0, 90);
+        this._ctx.arc(this._position.x, this._position.y, Ball._radius, 0, 90);
         this._ctx.fillStyle = this._color;
         this._ctx.fill();
         this.move();
     }
 
+    calculateAngle(angle) {
+
+        // 2. quadrant
+
+        if ((angle > 90) && (angle < 180)) {
+            return 180 + (180 - angle);
+        }
+
+        // 3. quadrant
+
+        if ((angle > 180) && (angle < 270)) {
+            return 180 - (angle - 180);
+        }
+
+    }
+
     move() {
 
-        if (this._position.y > Ball._radius && this._direction === 'go_up') {
-            this._position.y -= this._speed;
-        } else {
+        this._world.getObjects().forEach(gameObject => {
 
-            this.bounceDown();
-
-            this._world.getObjects().forEach(gameObject => {
-                if (!(gameObject instanceof Ball)) {
-                    if (CollisionDetector.isColision(this, gameObject)) {
-
-                        if (gameObject instanceof Player) {
-                            this.bounceUp();
-                        }
-
-                    }
+            if(!(gameObject instanceof Ball)) {
+                if(CollisionDetector.isColision(this, gameObject)) {
+                    this._angle = this.calculateAngle(this._angle);
                 }
-            });
-        }
+            }
+
+        });
+
+        let nextPosition: Position = Position.getNextPosition(this._speed, this._angle, this._position);
+        this._position = nextPosition;
+
     }
 
-    private bounceUp() {
-        this._direction = 'go_up';
-        this._position.y -= this._speed;
-    }
-
-    private bounceDown() {
-        this._direction = 'go_down';
-        this._position.y += this._speed;
+    hit() {
+        // Void
     }
 
     height() {
@@ -79,3 +86,4 @@ export class Ball extends IGameObject {
     }
 
 }
+
