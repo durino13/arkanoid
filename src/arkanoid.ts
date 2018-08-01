@@ -56,7 +56,7 @@ export class ArkanoidGame {
         this._obstacleTop = new Obstacle(this._ctx, new Position(0, 1), new Position(Playground._width, 1));
 
         // Obstacle left
-        this._obstacleLeft = new Obstacle(this._ctx, new Position(0, 0), new Position(250, Playground._height));
+        this._obstacleLeft = new Obstacle(this._ctx, new Position(0, 0), new Position(1, Playground._height));
 
         // Obstacle right
         this._obstacleRight = new Obstacle(this._ctx, new Position(Playground._width - 1, 0), new Position(Playground._width - 1, Playground._height));

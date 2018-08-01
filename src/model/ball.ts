@@ -24,7 +24,7 @@ export class Ball extends IGameObject {
         this._ctx = ctx;
         this._posStart = position;
         this._color = 'blue';
-        this._speed = 1;
+        this._speed = 10;
         this._angle = 100;
         this._world = world;
     }
