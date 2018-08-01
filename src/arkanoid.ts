@@ -23,6 +23,8 @@ export class ArkanoidGame {
 
     protected _obstacleLeft: Obstacle;
 
+    protected _obstacleRight: Obstacle;
+
     constructor() {
         this.init();
     }
@@ -53,13 +55,18 @@ export class ArkanoidGame {
         // Screen top border
         this._obstacleTop = new Obstacle(this._ctx, new Position(0, 1), new Position(Playground._width, 1));
 
-        this._obstacleLeft = new Obstacle(this._ctx, new Position(0, 0), new Position(0, Playground._height));
+        // Obstacle left
+        this._obstacleLeft = new Obstacle(this._ctx, new Position(1, 0), new Position(1, Playground._height));
+
+        // Obstacle right
+        this._obstacleRight = new Obstacle(this._ctx, new Position(Playground._width - 1, 0), new Position(Playground._width - 1, Playground._height));
 
         // Add objects into the world
         this._world.addObject(this._player);
         this._world.addObject(this._obstacleBottom);
         this._world.addObject(this._obstacleTop);
         this._world.addObject(this._obstacleLeft);
+        this._world.addObject(this._obstacleRight);
         this._world.addObject(this._ball);
     }
 
