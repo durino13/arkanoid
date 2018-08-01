@@ -6,16 +6,21 @@ export class Obstacle extends IGameObject{
 
     protected _ctx;
 
-    constructor(ctx, position: Position) {
+    protected _posStart;
+
+    protected _posEnd;
+
+    constructor(ctx, posStart: Position, posEnd: Position) {
         super();
         this._ctx = ctx;
-        this._position = position;
+        this._posStart = posStart;
+        this._posEnd = posEnd;
     }
 
     draw() {
         // The obstacle is invisible
-        this._ctx.fillStyle = 'red';
-        this._ctx.fillRect(this._position.x, this._position.y, this.width(), this.height());
+        // this._ctx.fillStyle = 'red';
+        // this._ctx.fillRect(this._posStart.x, this._posStart.y, this._posEnd.x, this._posEnd.y);
     }
 
     hit() {
@@ -28,6 +33,10 @@ export class Obstacle extends IGameObject{
 
     width() {
         return Playground._width;
+    }
+
+    getTopLeftCornerPosition() {
+        return new Position(this._posStart.x, this._posStart.y);
     }
 
 }

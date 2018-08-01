@@ -16,11 +16,13 @@ export abstract class IGameObject {
 
     abstract hit();
 
-    get position(): Position {
+    abstract getTopLeftCornerPosition();
+
+    get posStart(): Position {
         return this._position;
     }
 
-    set position(position: Position) {
+    set posStart(position: Position) {
         this._position = position;
     }
     

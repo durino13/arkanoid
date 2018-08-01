@@ -58,4 +58,8 @@ export class Player extends IGameObject {
         return Player._width;
     }
 
+    getTopLeftCornerPosition() {
+        return new Position(this._position.x, this._position.y);
+    }
+
 }

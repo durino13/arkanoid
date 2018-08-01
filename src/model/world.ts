@@ -1,5 +1,5 @@
 import { IGameObject } from './game_object';
-import { CollisionDetector } from './collision_detector';
+import { Collision } from './collision';
 
 export class World {
 
