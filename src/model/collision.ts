@@ -25,11 +25,18 @@ export class Collision {
      * @returns {boolean}
      */
     public static isColision(object1: IGameObject, object2: IGameObject) {
-        if (object1.getTopLeftCornerPosition().x < object2.getTopLeftCornerPosition().x + object2.width()  && object1.getTopLeftCornerPosition().x + object1.width()  > object2.getTopLeftCornerPosition().x &&
-            object1.getTopLeftCornerPosition().y < object2.getTopLeftCornerPosition().y + object2.height() && object1.getTopLeftCornerPosition().y + object1.height() > object2.getTopLeftCornerPosition().y) {
+        let c1 = object1.getTopLeftCornerPosition().x < object2.getTopLeftCornerPosition().x + object2.width();
+        let c2 = object2.getTopLeftCornerPosition().x < object1.getTopLeftCornerPosition().x + object1.width();
+        let c3 = object1.getTopLeftCornerPosition().y < object2.getTopLeftCornerPosition().y + object2.height();
+        let c4 = object2.getTopLeftCornerPosition().y < object1.getTopLeftCornerPosition().y + object1.height();
 
-        // TODO kolizie musim spravit pre vsetky rohy lopty .. Momentalne nefunguju spravne. Lopta ide do kolizie, az ked sa objekt dotkne
-        // stredu kruznice ..
+        // console.log(c3)
+        if ( c1 && c2 && c3 && c4) {
+
+            // console.log('aaaaaaaaaaaaaaaaa');
+            // console.log(object1.getTopLeftCornerPosition().x < object2.getTopLeftCornerPosition().x + object2.width())
+            // console.log(object2.getTopLeftCornerPosition().x)
+            // console.log(object2.getTopLeftCornerPosition().y)
             return new Collision(Collision.POSITION_TOP, 10);
 
         }

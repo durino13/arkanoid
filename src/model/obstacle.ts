@@ -28,11 +28,11 @@ export class Obstacle extends IGameObject{
     }
 
     height() {
-        return 1;
+        return this._posEnd.y - this._posStart.y;
     }
 
     width() {
-        return Playground._width;
+        return this._posEnd.x - this._posStart.x;
     }
 
     getTopLeftCornerPosition() {
