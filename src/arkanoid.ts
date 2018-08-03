@@ -56,13 +56,13 @@ export class ArkanoidGame {
         this._obstacleTop = new Obstacle(this._ctx, new Position(0, 1), new Position(Playground._width, 1));
 
         // Obstacle left
-        this._obstacleLeft = new Obstacle(this._ctx, new Position(0, 0), new Position(1, Playground._height));
+        this._obstacleLeft = new Obstacle(this._ctx, new Position(0, 0), new Position(240, Playground._height));
 
         // Obstacle right
-        this._obstacleRight = new Obstacle(this._ctx, new Position(Playground._width - 1, 0), new Position(Playground._width - 1, Playground._height));
+        this._obstacleRight = new Obstacle(this._ctx, new Position(Playground._width - 250, 0), new Position(Playground._width - 50, Playground._height));
 
         // Add objects into the world
-        this._world.addObject(this._player);
+        // this._world.addObject(this._player);
         this._world.addObject(this._obstacleBottom);
         this._world.addObject(this._obstacleTop);
         this._world.addObject(this._obstacleLeft);

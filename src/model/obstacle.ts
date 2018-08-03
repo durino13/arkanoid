@@ -20,7 +20,7 @@ export class Obstacle extends IGameObject{
     draw() {
         // The obstacle is invisible
         this._ctx.fillStyle = 'red';
-        this._ctx.fillRect(this._posStart.x, this._posStart.y, this._posEnd.x, this._posEnd.y);
+        this._ctx.fillRect(this._posStart.x, this._posStart.y, this.width(), this.height());
     }
 
     hit() {

@@ -2,20 +2,15 @@ import { IGameObject } from './game_object';
 
 export class Collision {
 
-    protected static readonly POSITION_TOP = 'POSITION_TOP';
-    protected static readonly POSITION_BOTTOM = 'POSITION_BOTTOM';
+    public static readonly SIDE_TOP = 'SIDE_TOP';
+    public static readonly SIDE_BOTTOM = 'SIDE_BOTTOM';
+    public static readonly SIDE_LEFT = 'SIDE_LEFT';
+    public static readonly SIDE_RIGHT = 'SIDE_RIGHT';
 
     protected colisionSide;
 
-    /**
-     * The possition of the collision
-     */
-    protected colisionPosition;  // 'top', 'right', 'left', 'bottom'
-
-
-    constructor(colisionSide, colisionPosition) {
+    constructor(colisionSide) {
         this.colisionSide = colisionSide;
-        this.colisionPosition = colisionPosition;
     }
 
     /**
@@ -24,23 +19,47 @@ export class Collision {
      * @param object2
      * @returns {boolean}
      */
-    public static isColision(object1: IGameObject, object2: IGameObject) {
-        let c1 = object1.getTopLeftCornerPosition().x < object2.getTopLeftCornerPosition().x + object2.width();
-        let c2 = object2.getTopLeftCornerPosition().x < object1.getTopLeftCornerPosition().x + object1.width();
-        let c3 = object1.getTopLeftCornerPosition().y < object2.getTopLeftCornerPosition().y + object2.height();
-        let c4 = object2.getTopLeftCornerPosition().y < object1.getTopLeftCornerPosition().y + object1.height();
+    public static isCollision(object1: IGameObject, object2: IGameObject) {
+
+        // Collision occures when all 4 conditions are met
+        let c1 = object1.getTopLeftCornerPosition().x <= object2.getTopLeftCornerPosition().x + object2.width();
+        let c2 = object2.getTopLeftCornerPosition().x <= object1.getTopLeftCornerPosition().x + object1.width();
+        let c3 = object1.getTopLeftCornerPosition().y <= object2.getTopLeftCornerPosition().y + object2.height();
+        let c4 = object2.getTopLeftCornerPosition().y <= object1.getTopLeftCornerPosition().y + object1.height();
 
         // console.log(c3)
         if ( c1 && c2 && c3 && c4) {
 
-            // console.log('aaaaaaaaaaaaaaaaa');
-            // console.log(object1.getTopLeftCornerPosition().x < object2.getTopLeftCornerPosition().x + object2.width())
-            // console.log(object2.getTopLeftCornerPosition().x)
-            // console.log(object2.getTopLeftCornerPosition().y)
-            return new Collision(Collision.POSITION_TOP, 10);
+            console.log(object2);
+
+            let position;
+
+            if (object1.getTopLeftCornerPosition().x > object2.getTopLeftCornerPosition().x) {
+                let dx = (object2.getTopLeftCornerPosition().x + object2.width()) - object1.getTopLeftCornerPosition().x;
+                let dy = (object1.getTopLeftCornerPosition().y + object1.height()) - object2.getTopLeftCornerPosition().y;
+                if (dx > dy) {
+                    if (object1.getTopLeftCornerPosition().y < object2.getTopLeftCornerPosition().y) {
+                        position = Collision.SIDE_TOP;
+                    } else {
+                        position = Collision.SIDE_BOTTOM;
+                    }
+                } else {
+                    if (object1.getTopLeftCornerPosition().x < object2.getTopLeftCornerPosition().x) {
+                        position = Collision.SIDE_RIGHT;
+                    } else {
+                        position = Collision.SIDE_LEFT;
+                    }
+                }
+            }
+
+            return new Collision(position);
 
         }
         return false;
+    }
+
+    public getColisionSide() {
+        return this.colisionSide;
     }
 
 }
