@@ -24,8 +24,8 @@ export class Ball extends IGameObject {
         this._ctx = ctx;
         this._posStart = position;
         this._color = 'blue';
-        this._speed = 1;
-        this._angle = 320;
+        this._speed = 5;
+        this._angle = 130;
         this._world = world;
     }
 
@@ -39,30 +39,47 @@ export class Ball extends IGameObject {
 
     calculateAngle(angle, side) {
 
-        if (side === Collision.SIDE_BOTTOM && (angle >= 270) && (angle < 360)) {
-            return 180 + (180 - angle);
+        console.log(side);
+        console.log('Lopta dopadla pod uhlom: ' + angle);
+
+        // Side top
+
+        if (side === Collision.SIDE_TOP && (angle >= 180) && (angle < 270)) {
+            return (angle - 90);
         }
 
-        if (side === Collision.SIDE_BOTTOM && (angle >= 180) && (angle < 270)) {
-            return 180 + (180 - angle);
-        }
-
-        if (side === Collision.SIDE_LEFT && (angle >= 0) && (angle < 90)) {
-            return (180 - angle);
-        }
-
-        if (side === Collision.SIDE_TOP && (angle >= 90) && (angle < 180)) {
+        if (side === Collision.SIDE_TOP && (angle >= 270) && (angle < 360)) {
             return 180 - (angle - 180);
         }
 
-        if (side === Collision.SIDE_LEFT && (angle > 180) && (angle < 270)) {
-            return (180 - angle);
+        // Side bottom
+
+        if (side === Collision.SIDE_BOTTOM && (angle >= 0) && (angle < 90)) {
+            return (360 - angle);
         }
 
-        if (side === Collision.SIDE_RIGHT && (angle > 90) && (angle < 180)) {
-            console.log(angle)
-            console.log('ole')
+        if (side === Collision.SIDE_BOTTOM && (angle >= 90) && (angle < 180)) {
             return 180 + (180 - angle);
+        }
+
+        // Side left
+
+        if (side === Collision.SIDE_LEFT && (angle >= 0) && (angle < 90)) {
+            return (angle + 90);
+        }
+
+        if (side === Collision.SIDE_LEFT && (angle >= 270) && (angle < 360)) {
+            return (angle - 90);
+        }
+
+        // Side right
+
+        if (side === Collision.SIDE_RIGHT && (angle >= 90) && (angle < 180)) {
+            return (angle - 90);
+        }
+
+        if (side === Collision.SIDE_RIGHT && (angle >= 180) && (angle < 270)) {
+            return (angle + 90);
         }
 
     }
@@ -79,7 +96,6 @@ export class Ball extends IGameObject {
             collision = Collision.isCollision(this, gameObject);
 
             if(!(gameObject instanceof Ball)) {
-                console.log(gameObject)
                 if(collision !== false) {
                     this._angle = this.calculateAngle(this._angle, collision.getColisionSide());
                 }
