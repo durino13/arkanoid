@@ -24,7 +24,7 @@ export class Ball extends IGameObject {
         this._ctx = ctx;
         this._posStart = position;
         this._color = 'blue';
-        this._speed = 5;
+        this._speed = 1;
         this._angle = 130;
         this._world = world;
     }
@@ -43,6 +43,10 @@ export class Ball extends IGameObject {
         console.log('Lopta dopadla pod uhlom: ' + angle);
 
         // Side top
+
+        if (side === Collision.SIDE_TOP && (angle >= 90) && (angle < 180)) {
+            return (angle + 90);
+        }
 
         if (side === Collision.SIDE_TOP && (angle >= 180) && (angle < 270)) {
             return (angle - 90);
@@ -93,11 +97,11 @@ export class Ball extends IGameObject {
         let collision;
         this._world.getObjects().forEach(gameObject => {
 
-            collision = Collision.isCollision(this, gameObject);
-
             if(!(gameObject instanceof Ball)) {
+                collision = Collision.isCollision(this, gameObject);
                 if(collision !== false) {
                     this._angle = this.calculateAngle(this._angle, collision.getColisionSide());
+                    console.log('Lopta sa odrazila pod uhlom: ' + this._angle);
                 }
             }
 
