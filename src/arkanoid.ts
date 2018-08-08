@@ -3,7 +3,7 @@ import { Position } from './model/position';
 import { Ball } from './model/ball';
 import { Playground } from './model/playground';
 import { World } from './model/world';
-import { Wall, Obstacle } from './model/obstacle';
+import { Wall, Obstacle, BottomWall } from './model/obstacle';
 import { CollisionManager } from './model/collisionManager';
 
 export class ArkanoidGame {
@@ -49,7 +49,7 @@ export class ArkanoidGame {
 
         // Player position
         let playerPos = new Position(this._canvas.width / 2 - Player._width / 2, this._canvas.height - Player._height);
-        this._player = new Player(this._ctx, playerPos);
+        this._player = new Player(this._ctx, this._collisionManager, playerPos);
 
         // Ball object
         let ballPos = new Position(Playground.getCenterWidth(), Playground._height - Player._height - Ball._radius);
@@ -65,7 +65,7 @@ export class ArkanoidGame {
         this._obstacleRight = new Wall(this._ctx, this._collisionManager, new Position(Playground._width - 10, 0), new Position(Playground._width, Playground._height));
 
         // Screen bottom
-        this._obstacleBottom = new Wall(this._ctx, this._collisionManager, new Position(0, Playground._height - 1), new Position(Playground._width, Playground._height - 1));
+        this._obstacleBottom = new BottomWall(this._ctx, this._collisionManager, new Position(0, Playground._height - 1), new Position(Playground._width, Playground._height - 1), 'red', this._world);
 
         // Add objects into the world
         this._world.addObject(this._player);
@@ -85,7 +85,7 @@ export class ArkanoidGame {
         // Render the world
         this._world.draw();
 
-        // Request to refresh the _canvas
+        // Request next frame
         requestAnimationFrame(this.play.bind(this));
     }
 

@@ -105,14 +105,12 @@ export class CollisionManager implements IObservable {
             // G8
             if (((object1.getTopLeftCornerPosition().x < object2.getTopLeftCornerPosition().x) && ((object1.getTopLeftCornerPosition().x + object1.width()) > object2.getTopLeftCornerPosition().x)) && (object1.getTopLeftCornerPosition().y > object2.getTopLeftCornerPosition().y) && ((object1.getTopLeftCornerPosition().y + object1.height() < object2.getTopLeftCornerPosition().y + object2.height()))) {
                 console.log('G8');
-                console.log(object1.getTopLeftCornerPosition().x)
-                console.log(object2.getTopLeftCornerPosition().x)
                 position = Collision.SIDE_LEFT;
             }
 
             // Niekedy sa stava, ze kolizia nastava 2x na tej istej hrane, co sa nesmie stat ..
             if (this._lastCollisionSide !== position) {
-                return new Collision(object2, position);
+                return new Collision(object1, object2, position);
             } else {
                 console.log('Skipping collision ...')
             }

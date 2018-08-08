@@ -23,6 +23,8 @@ export class Ball extends IGameObject implements IObserver{
 
     protected _world;
 
+    protected _angleAdjustment;
+
     constructor(ctx, collisionManager: CollisionManager, position: Position, world: World) {
         super();
         this._collisionManager = collisionManager;
@@ -33,6 +35,15 @@ export class Ball extends IGameObject implements IObserver{
         this._speed = 5;
         this._angle = 120;
         this._world = world;
+        this._angleAdjustment = 0;
+    }
+
+    set angleAdjustment(angleAdjustment: number) {
+        this._angleAdjustment = angleAdjustment;
+    }
+
+    get angleAdjustment(): number {
+        return this._angleAdjustment;
     }
 
     draw() {
@@ -52,45 +63,50 @@ export class Ball extends IGameObject implements IObserver{
         console.log(side);
         console.log('Lopta dopadla pod uhlom: ' + angle);
 
+        let outputAngle = 0;
+
         // Side top
 
         if (side === Collision.SIDE_TOP && (angle >= 270) && (angle < 360)) {
-            return 0 + (360 - angle);
+            outputAngle = 0 + (360 - angle);
         }
 
         if (side === Collision.SIDE_TOP && (angle >= 180) && (angle < 270)) {
-            return 90 + (270 - angle);
+            outputAngle = 90 + (270 - angle);
         }
 
         // Side bottom
 
         if (side === Collision.SIDE_BOTTOM && (angle >= 90) && (angle < 180)) {
-            return 180 + (180 - angle);
+            outputAngle = 180 + (180 - angle);
         }
 
         if (side === Collision.SIDE_BOTTOM && (angle >= 0) && (angle < 90)) {
-            return 360 - angle;
+            outputAngle = 360 - angle;
         }
 
         // Side left
 
         if (side === Collision.SIDE_LEFT && (angle >= 0) && (angle < 90)) {
-            return 180 - angle;
+            outputAngle = 180 - angle;
         }
 
         if (side === Collision.SIDE_LEFT && (angle >= 270) && (angle < 360)) {
-            return 180 + (360 - angle)
+            outputAngle = 180 + (360 - angle)
         }
 
         // Side right
 
         if (side === Collision.SIDE_RIGHT && (angle >= 90) && (angle < 180)) {
-            return 0 + (180 - angle);
+            outputAngle = 0 + (180 - angle);
         }
 
         if (side === Collision.SIDE_RIGHT && (angle >= 180) && (angle < 270)) {
-            return 270 + (270 - angle)
+            outputAngle = 270 + (270 - angle)
         }
+
+        console.log(outputAngle + this._angleAdjustment);
+        return outputAngle + this._angleAdjustment;
 
     }
 
@@ -121,6 +137,7 @@ export class Ball extends IGameObject implements IObserver{
         let radians = angle * Math.PI/ 180;
         let xunits = Math.cos(radians) * speed;
         let yunits = - Math.sin(radians) * speed;
+        this.resetAngleAdnustment();
         return new Position(startPosition.x + xunits, startPosition.y + yunits);
     }
 
@@ -132,9 +149,22 @@ export class Ball extends IGameObject implements IObserver{
         return Ball._radius * 2;
     }
 
+    resetAngleAdnustment() {
+        this._angleAdjustment = 0;
+    }
+    
+    /*
+    |--------------------------------------------------------------------------
+    | On collision event
+    |--------------------------------------------------------------------------
+    | 
+    |
+    */
+
     onCollision(collision: Collision) {
         this._angle = this.calculateAngle(this._angle, collision.collisionSide);
         console.log('Ball new angle: ' + this._angle);
+        console.log('Angle adjusted by: ' + this._angleAdjustment);
     }
 
 }

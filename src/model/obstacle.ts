@@ -3,6 +3,7 @@ import { Position } from './position';
 import { IObserver } from '../general/observer';
 import { Collision } from './collision';
 import { CollisionManager } from './collisionManager';
+import { World } from './world';
 
 export class Obstacle extends IGameObject implements IObserver {
 
@@ -52,4 +53,21 @@ export class Obstacle extends IGameObject implements IObserver {
 }
 
 export class Wall extends Obstacle {
+}
+
+export class BottomWall extends Obstacle {
+
+    protected _world;
+
+    constructor(ctx, collisionManager: CollisionManager, posStart: Position, posEnd: Position, color: string = 'red', world: World) {
+        super(ctx, collisionManager, posStart, posEnd, color);
+        this._world = world;
+    }
+
+    onCollision(collision: Collision) {
+        if (collision.collisionObject2 === this) {
+            this._world.gameOver = true;
+        }
+    }
+
 }
