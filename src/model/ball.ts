@@ -31,7 +31,7 @@ export class Ball extends IGameObject implements IObserver{
         this._posStart = position;
         this._color = 'blue';
         this._speed = 5;
-        this._angle = 110;
+        this._angle = 120;
         this._world = world;
     }
 
@@ -50,46 +50,43 @@ export class Ball extends IGameObject implements IObserver{
 
         // Side top
 
-        if (side === Collision.SIDE_TOP && (angle >= 90) && (angle < 180)) {
-            return (angle + 90);
+        if (side === Collision.SIDE_TOP && (angle >= 270) && (angle < 360)) {
+            return 0 + (360 - angle);
         }
 
         if (side === Collision.SIDE_TOP && (angle >= 180) && (angle < 270)) {
-            return (angle - 90);
-        }
-
-        if (side === Collision.SIDE_TOP && (angle >= 270) && (angle < 360)) {
-            return 180 - (angle - 180);
+            return 90 + (270 - angle);
         }
 
         // Side bottom
-
-        if (side === Collision.SIDE_BOTTOM && (angle >= 0) && (angle < 90)) {
-            return (360 - angle);
-        }
 
         if (side === Collision.SIDE_BOTTOM && (angle >= 90) && (angle < 180)) {
             return 180 + (180 - angle);
         }
 
+        if (side === Collision.SIDE_BOTTOM && (angle >= 0) && (angle < 90)) {
+            return 360 - angle;
+        }
+
         // Side left
 
         if (side === Collision.SIDE_LEFT && (angle >= 0) && (angle < 90)) {
-            return (angle + 90);
+            return 180 - angle;
         }
 
         if (side === Collision.SIDE_LEFT && (angle >= 270) && (angle < 360)) {
-            return (angle - 90);
+            return 180 + (360 - angle)
         }
 
         // Side right
 
         if (side === Collision.SIDE_RIGHT && (angle >= 90) && (angle < 180)) {
-            return (angle - 90);
+            // return 90 - (180 - angle);
+            return 0 + (180 - angle);
         }
 
         if (side === Collision.SIDE_RIGHT && (angle >= 180) && (angle < 270)) {
-            return (angle + 90);
+            return 270 + (270 - angle)
         }
 
     }
