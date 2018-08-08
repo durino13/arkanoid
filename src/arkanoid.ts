@@ -25,6 +25,8 @@ export class ArkanoidGame {
 
     protected _obstacleRight: Obstacle;
 
+    protected _bricks: Array<Obstacle>;
+
     constructor() {
         this.init();
     }
@@ -49,17 +51,17 @@ export class ArkanoidGame {
         let ballPos = new Position(Playground.getCenterWidth(), Playground._height - Player._height - Ball._radius);
         this._ball = new Ball(this._ctx, ballPos, this._world);
 
+        // Screen top border
+        this._obstacleTop = new Obstacle(this._ctx, new Position(0, 0), new Position(Playground._width, 10));
+
         // Screen bottom
         this._obstacleBottom = new Obstacle(this._ctx, new Position(0, Playground._height - 1), new Position(Playground._width, Playground._height - 1));
 
-        // Screen top border
-        this._obstacleTop = new Obstacle(this._ctx, new Position(0, 0), new Position(Playground._width, 20));
-
         // Obstacle left
-        this._obstacleLeft = new Obstacle(this._ctx, new Position(0, 0), new Position(100, Playground._height));
+        this._obstacleLeft = new Obstacle(this._ctx, new Position(0, 0), new Position(10, Playground._height));
 
         // Obstacle right
-        this._obstacleRight = new Obstacle(this._ctx, new Position(Playground._width - 5, 0), new Position(Playground._width, Playground._height));
+        this._obstacleRight = new Obstacle(this._ctx, new Position(Playground._width - 10, 0), new Position(Playground._width, Playground._height));
 
         // Add objects into the world
         this._world.addObject(this._player);
@@ -67,6 +69,7 @@ export class ArkanoidGame {
         this._world.addObject(this._obstacleTop);
         this._world.addObject(this._obstacleLeft);
         this._world.addObject(this._obstacleRight);
+        this._world.addObjects(Playground.getBricks(this._ctx));
         this._world.addObject(this._ball);
     }
 

@@ -1,5 +1,4 @@
 import { IGameObject } from './game_object';
-import { Collision } from './collision';
 
 export class World {
 
@@ -9,6 +8,10 @@ export class World {
 
     addObject(object: IGameObject) {
         this.gameObjects.push(object);
+    }
+
+    addObjects(objects: Array<IGameObject>) {
+        this.gameObjects = this.gameObjects.concat(objects);
     }
 
     getObjects() {
@@ -21,10 +24,6 @@ export class World {
                 object.draw();
             })
         }
-    }
-
-    detectCollision() {
-
     }
 
 }

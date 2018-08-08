@@ -2,6 +2,8 @@ import { Position } from './position';
 
 export abstract class IGameObject {
 
+    protected _color: string;
+
     protected _width: number;
 
     protected _height: number;
@@ -14,8 +16,6 @@ export abstract class IGameObject {
 
     abstract height();
 
-    abstract hit();
-
     abstract getTopLeftCornerPosition();
 
     get posStart(): Position {
@@ -24,6 +24,10 @@ export abstract class IGameObject {
 
     set posStart(position: Position) {
         this._position = position;
+    }
+
+    get color() {
+        return this._color;
     }
     
 }

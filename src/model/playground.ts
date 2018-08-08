@@ -1,11 +1,41 @@
+import { Obstacle } from './obstacle';
+import { Position } from './position';
+
 export class Playground {
 
-    public static readonly _width = 500;
+    public static readonly _width = 842;
 
-    public static readonly _height = 400;
+    public static readonly _height = 600;
 
     public static getCenterWidth() {
         return Playground._width / 2;
+    }
+
+    public static getBricks(ctx) {
+
+        let bricks = [];
+
+        let brickWidth = 80;
+
+        let brickHeight = 20;
+
+        let gap = 2;
+
+        let topLeftCornerX = 10 + gap;
+
+        let topLeftCornerY = 10;
+
+        for (let i = 0; i < 10; i++) {
+
+            let brickTopLeftCorner = new Position(topLeftCornerX, topLeftCornerY);
+            let brickBottomRightCorner = new Position(topLeftCornerX + brickWidth, 10 + brickHeight);
+            let newBrick = new Obstacle(ctx, brickTopLeftCorner, brickBottomRightCorner, 'green');
+            bricks.push(newBrick);
+            topLeftCornerX = topLeftCornerX + brickWidth + gap;
+        }
+
+        return bricks;
+
     }
 
 }

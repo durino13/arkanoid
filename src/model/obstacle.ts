@@ -1,5 +1,4 @@
 import { IGameObject } from './game_object';
-import { Playground } from './playground';
 import { Position } from './position';
 
 export class Obstacle extends IGameObject{
@@ -10,21 +9,18 @@ export class Obstacle extends IGameObject{
 
     protected _posEnd;
 
-    constructor(ctx, posStart: Position, posEnd: Position) {
+    constructor(ctx, posStart: Position, posEnd: Position, color: string = 'red') {
         super();
         this._ctx = ctx;
         this._posStart = posStart;
         this._posEnd = posEnd;
+        this._color = color;
     }
 
     draw() {
         // The obstacle is invisible
-        this._ctx.fillStyle = 'red';
+        this._ctx.fillStyle = this._color;
         this._ctx.fillRect(this._posStart.x, this._posStart.y, this.width(), this.height());
-    }
-
-    hit() {
-        console.log('I got hit');
     }
 
     height() {

@@ -107,8 +107,10 @@ export class Collision {
             }
 
             // G8
-            if ((object1.getTopLeftCornerPosition().y > object2.getTopLeftCornerPosition().y) && ((object1.getTopLeftCornerPosition().y + object1.height()) < (object2.getTopLeftCornerPosition().y + object2.height())) && (object2.getTopLeftCornerPosition().x < object1.getTopLeftCornerPosition().x + object1.width()) && (object1.getTopLeftCornerPosition().x < object2.getTopLeftCornerPosition().x)) {
+            if (((object1.getTopLeftCornerPosition().x < object2.getTopLeftCornerPosition().x) && ((object1.getTopLeftCornerPosition().x + object1.width()) > object2.getTopLeftCornerPosition().x)) && (object1.getTopLeftCornerPosition().y > object2.getTopLeftCornerPosition().y) && ((object1.getTopLeftCornerPosition().y + object1.height() < object2.getTopLeftCornerPosition().y + object2.height()))) {
                 console.log('G8');
+                console.log(object1.getTopLeftCornerPosition().x)
+                console.log(object2.getTopLeftCornerPosition().x)
                 position = Collision.SIDE_LEFT;
             }
 

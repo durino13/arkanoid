@@ -16,8 +16,6 @@ export class Player extends IGameObject {
 
     private _ctx;
 
-    private _color: string;
-
     private _speed: number;
 
     constructor(ctx, position: Position) {
