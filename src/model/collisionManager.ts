@@ -7,6 +7,8 @@ export class CollisionManager implements IObservable {
 
     protected observers: Array<IObserver> = [];
 
+    protected _lastCollisionSide;
+
     /**
      * Detect collision between 2 objects
      * @param object1
@@ -108,13 +110,21 @@ export class CollisionManager implements IObservable {
                 position = Collision.SIDE_LEFT;
             }
 
-            // Collision occured ..
-            this.notifyObservers(new Collision(object2, position));
+            // Niekedy sa stava, ze kolizia nastava 2x na tej istej hrane, co sa nesmie stat ..
+            if (this._lastCollisionSide !== position) {
+                return new Collision(object2, position);
+            } else {
+                console.log('Skipping collision ...')
+            }
 
         }
 
         // No collision
         return false;
+    }
+
+    set lastCollisionSide(lastCollisionSide: string) {
+        this._lastCollisionSide = lastCollisionSide;
     }
 
     public notifyObservers(collision: Collision) {

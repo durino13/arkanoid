@@ -1,3 +1,5 @@
+import { CollisionManager } from './collisionManager';
+
 export class Position {
 
     private _x;
@@ -23,13 +25,6 @@ export class Position {
 
     set y(value) {
         this._y = value;
-    }
-
-    public static getNextPosition(speed: number, angle: number, startPosition: Position): Position {
-        let radians = angle * Math.PI/ 180;
-        let xunits = Math.cos(radians) * speed;
-        let yunits = - Math.sin(radians) * speed;
-        return new Position(startPosition.x + xunits, startPosition.y + yunits);
     }
 
 }

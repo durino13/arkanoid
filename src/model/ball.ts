@@ -100,18 +100,28 @@ export class Ball extends IGameObject implements IObserver{
 
     move() {
 
-        let collision;
         this._world.getObjects().forEach(gameObject => {
 
             if(!(gameObject instanceof Ball)) {
-                this._collisionManager.determineCollision(this, gameObject);
+                let collision = this._collisionManager.determineCollision(this, gameObject);
+                if (collision !== false) {
+                    this._collisionManager.notifyObservers(collision);
+                    this._collisionManager.lastCollisionSide = collision.collisionSide;
+                }
             }
 
         });
 
-        let nextPosition: Position = Position.getNextPosition(this._speed, this._angle, this._posStart);
+        let nextPosition: Position = this.getNextPosition(this._speed, this._angle, this._posStart);
         this._posStart = nextPosition;
 
+    }
+
+    public getNextPosition(speed: number, angle: number, startPosition: Position): Position {
+        let radians = angle * Math.PI/ 180;
+        let xunits = Math.cos(radians) * speed;
+        let yunits = - Math.sin(radians) * speed;
+        return new Position(startPosition.x + xunits, startPosition.y + yunits);
     }
 
     height() {
@@ -124,7 +134,7 @@ export class Ball extends IGameObject implements IObserver{
 
     onCollision(collision: Collision) {
         this._angle = this.calculateAngle(this._angle, collision.collisionSide);
-        console.log('Lopta sa odrazila pod uhlom: ' + this._angle);
+        console.log('Ball new angle: ' + this._angle);
     }
 
 }
