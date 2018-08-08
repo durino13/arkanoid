@@ -26,13 +26,23 @@ export class Playground {
 
         let topLeftCornerY = 10;
 
-        for (let i = 0; i < 10; i++) {
+        for (let row = 0; row < 4; row++) {
 
-            let brickTopLeftCorner = new Position(topLeftCornerX, topLeftCornerY);
-            let brickBottomRightCorner = new Position(topLeftCornerX + brickWidth, 10 + brickHeight);
-            let newBrick = new Obstacle(ctx, collisionManager, brickTopLeftCorner, brickBottomRightCorner, 'green');
-            bricks.push(newBrick);
-            topLeftCornerX = topLeftCornerX + brickWidth + gap;
+            let brickTopLeftCorner;
+            let brickBottomRightCorner;
+
+            for (let column = 0; column < 10; column++) {
+
+                brickTopLeftCorner = new Position(topLeftCornerX, topLeftCornerY);
+                brickBottomRightCorner = new Position(topLeftCornerX + brickWidth, topLeftCornerY + brickHeight);
+                let newBrick = new Obstacle(ctx, collisionManager, brickTopLeftCorner, brickBottomRightCorner, 'green');
+                bricks.push(newBrick);
+                topLeftCornerX = topLeftCornerX + brickWidth + gap;
+
+            }
+
+            topLeftCornerX = 10 + gap;
+            topLeftCornerY = topLeftCornerY + brickHeight + gap;
 
         }
 

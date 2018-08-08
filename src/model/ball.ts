@@ -43,6 +43,10 @@ export class Ball extends IGameObject implements IObserver{
         this.move();
     }
 
+    /**
+     * @param angle
+     * @param side
+     */
     calculateAngle(angle, side) {
 
         console.log(side);
@@ -81,7 +85,6 @@ export class Ball extends IGameObject implements IObserver{
         // Side right
 
         if (side === Collision.SIDE_RIGHT && (angle >= 90) && (angle < 180)) {
-            // return 90 - (180 - angle);
             return 0 + (180 - angle);
         }
 
