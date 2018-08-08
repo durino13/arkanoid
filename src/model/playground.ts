@@ -1,5 +1,6 @@
 import { Obstacle } from './obstacle';
 import { Position } from './position';
+import { CollisionManager } from './collisionManager';
 
 export class Playground {
 
@@ -11,7 +12,7 @@ export class Playground {
         return Playground._width / 2;
     }
 
-    public static getBricks(ctx) {
+    public static getBricks(ctx, collisionManager: CollisionManager) {
 
         let bricks = [];
 
@@ -29,9 +30,10 @@ export class Playground {
 
             let brickTopLeftCorner = new Position(topLeftCornerX, topLeftCornerY);
             let brickBottomRightCorner = new Position(topLeftCornerX + brickWidth, 10 + brickHeight);
-            let newBrick = new Obstacle(ctx, brickTopLeftCorner, brickBottomRightCorner, 'green');
+            let newBrick = new Obstacle(ctx, collisionManager, brickTopLeftCorner, brickBottomRightCorner, 'green');
             bricks.push(newBrick);
             topLeftCornerX = topLeftCornerX + brickWidth + gap;
+
         }
 
         return bricks;

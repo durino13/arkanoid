@@ -2,26 +2,28 @@ import { IGameObject } from './game_object';
 
 export class World {
 
-    protected gameOver: false;
+    protected _gameOver: false;
 
-    protected gameObjects: Array<IGameObject> = [];
+    protected _gameObjects: Array<IGameObject> = [];
 
     addObject(object: IGameObject) {
-        this.gameObjects.push(object);
+        this._gameObjects.push(object);
     }
 
     addObjects(objects: Array<IGameObject>) {
-        this.gameObjects = this.gameObjects.concat(objects);
+        this._gameObjects = this._gameObjects.concat(objects);
     }
 
     getObjects() {
-        return this.gameObjects;
+        return this._gameObjects;
     }
 
     draw() {
-        if (!this.gameOver) {
-            this.gameObjects.forEach(function(object) {
-                object.draw();
+        if (!this._gameOver) {
+            this._gameObjects.forEach(function(object) {
+                if (object.visible) {
+                    object.draw();
+                }
             })
         }
     }

@@ -1,7 +1,10 @@
 import { IGameObject } from './game_object';
 import { Position } from './position';
+import { IObserver } from '../general/observer';
+import { Collision } from './collision';
+import { CollisionManager } from './collisionManager';
 
-export class Obstacle extends IGameObject{
+export class Obstacle extends IGameObject implements IObserver {
 
     protected _ctx;
 
@@ -9,8 +12,12 @@ export class Obstacle extends IGameObject{
 
     protected _posEnd;
 
-    constructor(ctx, posStart: Position, posEnd: Position, color: string = 'red') {
+    protected _collisionManager;
+
+    constructor(ctx, collisionManager: CollisionManager, posStart: Position, posEnd: Position, color: string = 'red') {
         super();
+        this._collisionManager = collisionManager;
+        this._collisionManager.registerObserver(this);
         this._ctx = ctx;
         this._posStart = posStart;
         this._posEnd = posEnd;
@@ -35,4 +42,14 @@ export class Obstacle extends IGameObject{
         return new Position(this._posStart.x, this._posStart.y);
     }
 
+    onCollision(collision: Collision) {
+        let collidingObject = collision.collisionObject;
+        if ((collidingObject === this) && !(collidingObject instanceof Wall)) {
+            this.visible = false;
+        }
+    }
+
+}
+
+export class Wall extends Obstacle {
 }

@@ -2,8 +2,10 @@ import { Position } from './position';
 import { Collision } from './collision';
 import { IGameObject } from './game_object';
 import { World } from './world';
+import { CollisionManager } from './collisionManager';
+import { IObserver } from '../general/observer';
 
-export class Ball extends IGameObject {
+export class Ball extends IGameObject implements IObserver{
 
     public static readonly _radius = 10;
 
@@ -17,15 +19,19 @@ export class Ball extends IGameObject {
 
     protected _color;
 
+    protected _collisionManager;
+
     protected _world;
 
-    constructor(ctx, position: Position, world: World) {
+    constructor(ctx, collisionManager: CollisionManager, position: Position, world: World) {
         super();
+        this._collisionManager = collisionManager;
+        this._collisionManager.registerObserver(this);
         this._ctx = ctx;
         this._posStart = position;
         this._color = 'blue';
         this._speed = 5;
-        this._angle = 130;
+        this._angle = 110;
         this._world = world;
     }
 
@@ -98,11 +104,7 @@ export class Ball extends IGameObject {
         this._world.getObjects().forEach(gameObject => {
 
             if(!(gameObject instanceof Ball)) {
-                collision = Collision.isCollision(this, gameObject);
-                if(collision !== false) {
-                    this._angle = this.calculateAngle(this._angle, collision.getColisionSide());
-                    console.log('Lopta sa odrazila pod uhlom: ' + this._angle);
-                }
+                this._collisionManager.determineCollision(this, gameObject);
             }
 
         });
@@ -112,16 +114,17 @@ export class Ball extends IGameObject {
 
     }
 
-    hit() {
-        // Void
-    }
-
     height() {
         return Ball._radius * 2;
     }
 
     width() {
         return Ball._radius * 2;
+    }
+
+    onCollision(collision: Collision) {
+        this._angle = this.calculateAngle(this._angle, collision.collisionSide);
+        console.log('Lopta sa odrazila pod uhlom: ' + this._angle);
     }
 
 }
