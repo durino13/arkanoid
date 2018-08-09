@@ -32,8 +32,8 @@ export class Ball extends IGameObject implements IObserver{
         this._ctx = ctx;
         this._posStart = position;
         this._color = 'blue';
-        this._speed = 5;
-        this._angle = 120;
+        this._speed = 8;
+        this._angle = 95;
         this._world = world;
         this._angleAdjustment = 0;
     }
@@ -44,6 +44,10 @@ export class Ball extends IGameObject implements IObserver{
 
     get angleAdjustment(): number {
         return this._angleAdjustment;
+    }
+
+    get angle() {
+        return this._angle;
     }
 
     draw() {
@@ -105,7 +109,6 @@ export class Ball extends IGameObject implements IObserver{
             outputAngle = 270 + (270 - angle)
         }
 
-        console.log(outputAngle + this._angleAdjustment);
         return outputAngle + this._angleAdjustment;
 
     }

@@ -3,6 +3,7 @@ import { IGameObject } from './game_object';
 import { IObserver } from '../general/observer';
 import { Collision } from './collision';
 import { CollisionManager } from './collisionManager';
+import { Ball } from './ball';
 
 let ARROW_MAP = {
     37: 'left',
@@ -17,15 +18,11 @@ export class Player extends IGameObject implements IObserver {
 
     public static readonly _height = 15;
 
-    public static readonly DISTRIBUTION_SIZE = 10;
-
     protected _ctx;
 
     protected _speed: number;
 
     protected _collisionManager: CollisionManager;
-
-    protected _collisionDistributionIndexes: Array<Position>;
 
     constructor(ctx, cm: CollisionManager, position: Position) {
         super();
@@ -35,8 +32,6 @@ export class Player extends IGameObject implements IObserver {
         this._speed = 15;
         this._collisionManager = cm;
         this._collisionManager.registerObserver(this);
-        this._collisionDistributionIndexes = [];
-        this.calculateCollisionDistribution();
         document.addEventListener('keydown', this.move.bind(this));
     }
 
@@ -70,25 +65,20 @@ export class Player extends IGameObject implements IObserver {
         return new Position(this._position.x, this._position.y);
     }
 
-    /**
-     * @param collisionObject2 The object colliding with the ball
-     */
-    protected calculateCollisionDistribution() {
-        let index = 0;
-        let regions = this.width() / Player.DISTRIBUTION_SIZE;
-        while (index < regions) {
-            this._collisionDistributionIndexes.push(new Position(index * Player.DISTRIBUTION_SIZE, index * Player.DISTRIBUTION_SIZE + Player.DISTRIBUTION_SIZE));
-            index++;
-        }
-    }
+    calculateAngleAdjustment(ball: Ball) {
 
-    calculatePlayerCollisionPointIndex(collisionObject: IGameObject): number {
-        let diff = Math.abs(this.getTopLeftCornerPosition().x - collisionObject.getTopLeftCornerPosition().x);
-        for (let i = 0; i < this._collisionDistributionIndexes.length; i++) {
-            if (diff > this._collisionDistributionIndexes[i].x && diff < this._collisionDistributionIndexes[i].x + Player.DISTRIBUTION_SIZE) {
-                return this._collisionDistributionIndexes.length - i;
-            }
+        let ballVsPayerCollisionPointX = ball.getTopLeftCornerPosition().x - this.getTopLeftCornerPosition().x;
+
+        if ((ball.angle > 180 && ball.angle < 270) && (ballVsPayerCollisionPointX > Player._width / 2)) {
+            console.log('Adjusting ball angle backwards');
+            return -20;
         }
+
+        if ((ball.angle > 270 && ball.angle < 360) && (ballVsPayerCollisionPointX < Player._width / 2)) {
+            console.log('Adjusting ball angle backwards');
+            return 20;
+        }
+
         return 0;
     }
 
@@ -104,10 +94,7 @@ export class Player extends IGameObject implements IObserver {
 
         if (collision.collisionObject2 === this) {
             let ball = collision.collisionObject1;
-            // Calculate the collision index. Based on this index, we will generate a random ball angle
-            let collisionIndex: number = this.calculatePlayerCollisionPointIndex(collision.collisionObject1);
-            let angleAdjustment = + (collisionIndex * 6);
-            ball.angleAdjustment = angleAdjustment;
+            ball.angleAdjustment = this.calculateAngleAdjustment(collision.collisionObject1);
         }
 
     }
