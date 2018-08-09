@@ -4,6 +4,7 @@ import { IObserver } from '../general/observer';
 import { Collision } from './collision';
 import { CollisionManager } from './collisionManager';
 import { Ball } from './ball';
+import { Sprite } from '../general/sprite';
 
 let ARROW_MAP = {
     37: 'left',
@@ -37,7 +38,9 @@ export class Player extends IGameObject implements IObserver {
 
     draw() {
         this._ctx.fillStyle = this._color;
-        this._ctx.fillRect(this._position.x, this._position.y, Player._width, Player._height);
+        let sprite = new Sprite(this._ctx, '', new Position(0,0), 10, 0, 0, 0, true);
+        sprite.render();
+        // this._ctx.fillRect(this._position.x, this._position.y, Player._width, Player._height);
     }
 
     move(e) {

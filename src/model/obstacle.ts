@@ -44,10 +44,7 @@ export class Obstacle extends IGameObject implements IObserver {
     }
 
     onCollision(collision: Collision) {
-    //     let collidingObject = collision.collisionObject;
-    //     if ((collidingObject === this) && !(collidingObject instanceof Wall)) {
-    //         this.visible = false;
-    //     }
+        // No implementation ..
     }
 
 }
