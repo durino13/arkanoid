@@ -23,21 +23,23 @@ export class Obstacle extends IGameObject implements IObserver {
         this._posStart = posStart;
         this._posEnd = posEnd;
         this._color = color;
+        this._height = this._posEnd.y - this._posStart.y;
+        this._width = this._posEnd.x - this._posStart.x;
     }
 
     draw() {
         // The obstacle is invisible
         this._ctx.fillStyle = this._color;
-        this._ctx.fillRect(this._posStart.x, this._posStart.y, this.width(), this.height());
+        this._ctx.fillRect(this._posStart.x, this._posStart.y, this.width, this.height);
     }
 
-    height() {
-        return this._posEnd.y - this._posStart.y;
-    }
-
-    width() {
-        return this._posEnd.x - this._posStart.x;
-    }
+    // height() {
+    //     return this._posEnd.y - this._posStart.y;
+    // }
+    //
+    // width() {
+    //     return this._posEnd.x - this._posStart.x;
+    // }
 
     getTopLeftCornerPosition() {
         return new Position(this._posStart.x, this._posStart.y);

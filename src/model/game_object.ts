@@ -2,10 +2,6 @@ import { Position } from './position';
 
 export abstract class IGameObject {
 
-    constructor() {
-        this._visible = true;
-    }
-
     protected _color: string;
 
     protected _width: number;
@@ -17,10 +13,6 @@ export abstract class IGameObject {
     protected _visible: boolean;
 
     abstract draw();
-
-    abstract width();
-
-    abstract height();
 
     abstract getTopLeftCornerPosition();
 
@@ -36,12 +28,12 @@ export abstract class IGameObject {
         return this._color;
     }
 
-    get visible() {
-        return this._visible;
+    get width() {
+        return this._width;
     }
 
-    set visible(visible: boolean) {
-        this._visible = visible;
+    get height() {
+        return this._height;
     }
     
 }

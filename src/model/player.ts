@@ -31,6 +31,8 @@ export class Player extends IGameObject implements IObserver {
         this._position = position;
         this._color = 'orange';
         this._speed = 15;
+        this._height = Player._height;
+        this._width = Player._width;
         this._collisionManager = cm;
         this._collisionManager.registerObserver(this);
         document.addEventListener('keydown', this.move.bind(this));
@@ -56,13 +58,13 @@ export class Player extends IGameObject implements IObserver {
 
     }
 
-    height() {
-        return Player._height;
-    }
-
-    width() {
-        return Player._width;
-    }
+    // height() {
+    //     return Player._height;
+    // }
+    //
+    // width() {
+    //     return Player._width;
+    // }
 
     getTopLeftCornerPosition() {
         return new Position(this._position.x, this._position.y);

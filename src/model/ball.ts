@@ -34,6 +34,8 @@ export class Ball extends IGameObject implements IObserver{
         this._color = 'blue';
         this._speed = 8;
         this._angle = 95;
+        this._width = Ball._radius * 2;
+        this._height = Ball._radius * 2;
         this._world = world;
         this._angleAdjustment = 0;
     }
@@ -144,13 +146,13 @@ export class Ball extends IGameObject implements IObserver{
         return new Position(startPosition.x + xunits, startPosition.y + yunits);
     }
 
-    height() {
-        return Ball._radius * 2;
-    }
-
-    width() {
-        return Ball._radius * 2;
-    }
+    // get height() {
+    //     return Ball._radius * 2;
+    // }
+    //
+    // get width() {
+    //     return Ball._radius * 2;
+    // }
 
     resetAngleAdnustment() {
         this._angleAdjustment = 0;

@@ -35,9 +35,7 @@ export class World implements IObserver {
     draw() {
         if (!this._gameOver) {
             this._gameObjects.forEach(function(object) {
-                if (object.visible) {
-                    object.draw();
-                }
+                object.draw();
             })
         }
     }
