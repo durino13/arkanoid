@@ -15,9 +15,15 @@ let ARROW_MAP = {
 
 export class Player extends IGameObject implements IObserver {
 
-    public static readonly _width = 80;
+    public static readonly _width = 97;
 
-    public static readonly _height = 15;
+    public static readonly _height = 25;
+
+    public static readonly _spriteX = 184;
+
+    public static readonly _spriteY = 111;
+
+    public static readonly _speed = 15;
 
     protected _ctx;
 
@@ -28,9 +34,9 @@ export class Player extends IGameObject implements IObserver {
     constructor(ctx, cm: CollisionManager, position: Position) {
         super();
         this._ctx = ctx;
-        this._position = position;
+        this._posStart = position;
         this._color = 'orange';
-        this._speed = 15;
+        this._speed = Player._speed;
         this._height = Player._height;
         this._width = Player._width;
         this._collisionManager = cm;
@@ -39,10 +45,8 @@ export class Player extends IGameObject implements IObserver {
     }
 
     draw() {
-        this._ctx.fillStyle = this._color;
-        let sprite = new Sprite(this._ctx, '', new Position(0,0), 10, 0, 0, 0, true);
+        let sprite = new Sprite(this._ctx, '../resources/arkanoid_sprite.png', this._posStart, new Position(this._width, this._height), new Position(Player._spriteX, Player._spriteY));
         sprite.render();
-        // this._ctx.fillRect(this._position.x, this._position.y, Player._width, Player._height);
     }
 
     move(e) {
@@ -50,24 +54,16 @@ export class Player extends IGameObject implements IObserver {
         let arrow = ARROW_MAP[e.keyCode];
 
         if (arrow === 'left') {
-            this._position.x -= this._speed;
+            this._posStart.x -= this._speed;
         }
         if (arrow === 'right') {
-            this._position.x += this._speed;
+            this._posStart.x += this._speed;
         }
 
     }
 
-    // height() {
-    //     return Player._height;
-    // }
-    //
-    // width() {
-    //     return Player._width;
-    // }
-
     getTopLeftCornerPosition() {
-        return new Position(this._position.x, this._position.y);
+        return new Position(this._posStart.x, this._posStart.y);
     }
 
     calculateAngleAdjustment(ball: Ball) {
@@ -91,8 +87,6 @@ export class Player extends IGameObject implements IObserver {
     |--------------------------------------------------------------------------
     | Collision event
     |--------------------------------------------------------------------------
-    | 
-    |
     */
     
     onCollision(collision: Collision) {

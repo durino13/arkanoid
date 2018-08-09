@@ -4,10 +4,19 @@ import { IGameObject } from './game_object';
 import { World } from './world';
 import { CollisionManager } from './collisionManager';
 import { IObserver } from '../general/observer';
+import { Sprite } from '../general/sprite';
 
 export class Ball extends IGameObject implements IObserver{
 
-    public static readonly _radius = 10;
+    protected static readonly _spriteX = 32;
+
+    protected static readonly _spriteY = 79;
+
+    protected static readonly _speed = 8;
+
+    protected static _angle = 100;
+
+    public static readonly _radius = 12.5;
 
     protected _ctx;
 
@@ -32,8 +41,8 @@ export class Ball extends IGameObject implements IObserver{
         this._ctx = ctx;
         this._posStart = position;
         this._color = 'blue';
-        this._speed = 8;
-        this._angle = 95;
+        this._speed = Ball._speed;
+        this._angle = Ball._angle;
         this._width = Ball._radius * 2;
         this._height = Ball._radius * 2;
         this._world = world;
@@ -53,10 +62,11 @@ export class Ball extends IGameObject implements IObserver{
     }
 
     draw() {
-        this._ctx.beginPath();
-        this._ctx.arc(this._posStart.x, this._posStart.y, Ball._radius, 0, 90);
-        this._ctx.fillStyle = this._color;
-        this._ctx.fill();
+        let sprite = new Sprite(this._ctx, '../resources/arkanoid_sprite.png',
+            new Position(this._posStart.x - Ball._radius, this._posStart.y - Ball._radius),
+            new Position(this._width, this._height),
+            new Position(Ball._spriteX, Ball._spriteY));
+        sprite.render();
         this.move();
     }
 
@@ -145,14 +155,6 @@ export class Ball extends IGameObject implements IObserver{
         this.resetAngleAdnustment();
         return new Position(startPosition.x + xunits, startPosition.y + yunits);
     }
-
-    // get height() {
-    //     return Ball._radius * 2;
-    // }
-    //
-    // get width() {
-    //     return Ball._radius * 2;
-    // }
 
     resetAngleAdnustment() {
         this._angleAdjustment = 0;

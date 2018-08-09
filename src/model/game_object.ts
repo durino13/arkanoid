@@ -8,25 +8,7 @@ export abstract class IGameObject {
 
     protected _height: number;
 
-    protected _position: Position;
-
-    protected _visible: boolean;
-
-    abstract draw();
-
-    abstract getTopLeftCornerPosition();
-
-    get posStart(): Position {
-        return this._position;
-    }
-
-    set posStart(position: Position) {
-        this._position = position;
-    }
-
-    get color() {
-        return this._color;
-    }
+    protected _posStart: Position;
 
     get width() {
         return this._width;
@@ -36,4 +18,15 @@ export abstract class IGameObject {
         return this._height;
     }
     
+    /*
+    |--------------------------------------------------------------------------
+    | Abstract methods
+    |--------------------------------------------------------------------------
+    */
+
+    abstract draw();
+
+    abstract getTopLeftCornerPosition();
+
+
 }
