@@ -4,8 +4,13 @@ import { IObserver } from '../general/observer';
 import { Collision } from './collision';
 import { CollisionManager } from './collisionManager';
 import { World } from './world';
+import { Sprite } from '../general/sprite';
 
 export class Obstacle extends IGameObject implements IObserver {
+
+    public static readonly _spriteX = 0;
+
+    public static readonly _spriteY = 0;
 
     protected _ctx;
 
@@ -15,7 +20,7 @@ export class Obstacle extends IGameObject implements IObserver {
 
     protected _collisionManager;
 
-    constructor(ctx, collisionManager: CollisionManager, posStart: Position, posEnd: Position, color: string = 'red') {
+    constructor(ctx, collisionManager: CollisionManager, posStart: Position, posEnd: Position, color: string = 'blue') {
         super();
         this._collisionManager = collisionManager;
         this._collisionManager.registerObserver(this);
@@ -32,14 +37,6 @@ export class Obstacle extends IGameObject implements IObserver {
         this._ctx.fillStyle = this._color;
         this._ctx.fillRect(this._posStart.x, this._posStart.y, this.width, this.height);
     }
-
-    // height() {
-    //     return this._posEnd.y - this._posStart.y;
-    // }
-    //
-    // width() {
-    //     return this._posEnd.x - this._posStart.x;
-    // }
 
     getTopLeftCornerPosition() {
         return new Position(this._posStart.x, this._posStart.y);

@@ -35,6 +35,7 @@ export class ArkanoidGame {
     init() {
         // Create the canvas
         this._canvas = document.getElementById("arkanoidCanvas");
+        this._canvas.style.background = "url('resources/background.jpg')";
         this._ctx = this._canvas.getContext("2d");
 
         // set the canvas width and height

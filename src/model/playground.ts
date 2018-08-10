@@ -6,7 +6,7 @@ export class Playground {
 
     public static readonly _width = 842;
 
-    public static readonly _height = 600;
+    public static readonly _height = 800;
 
     public static getCenterWidth() {
         return Playground._width / 2;
@@ -35,7 +35,7 @@ export class Playground {
 
                 brickTopLeftCorner = new Position(topLeftCornerX, topLeftCornerY);
                 brickBottomRightCorner = new Position(topLeftCornerX + brickWidth, topLeftCornerY + brickHeight);
-                let newBrick = new Obstacle(ctx, collisionManager, brickTopLeftCorner, brickBottomRightCorner, 'green');
+                let newBrick = new Obstacle(ctx, collisionManager, brickTopLeftCorner, brickBottomRightCorner, '#CB2925');
                 bricks.push(newBrick);
                 topLeftCornerX = topLeftCornerX + brickWidth + gap;
 
