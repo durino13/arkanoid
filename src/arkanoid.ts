@@ -46,7 +46,7 @@ export class ArkanoidGame {
         this._collisionManager = new CollisionManager();
 
         // Create the world
-        this._world = new World(this._collisionManager);
+        this._world = new World(this._ctx, this._collisionManager);
 
         // Player position
         let playerPos = new Position(this._canvas.width / 2 - Player._width / 2, this._canvas.height - Player._height);

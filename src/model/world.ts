@@ -8,13 +8,16 @@ import { Player } from './player';
 
 export class World implements IObserver {
 
+    protected _ctx;
+
     protected _gameOver: boolean;
 
     protected _collisionManager;
 
     protected _gameObjects: Array<IGameObject> = [];
 
-    constructor(cm: CollisionManager) {
+    constructor(ctx, cm: CollisionManager) {
+        this._ctx = ctx;
         this._collisionManager = cm;
         this._collisionManager.registerObserver(this);
         this._gameOver = false;
@@ -37,6 +40,11 @@ export class World implements IObserver {
             this._gameObjects.forEach(function(object) {
                 object.draw();
             })
+        } else {
+            let gameOver = new Image();
+            gameOver.src = 'resources/game_over.png';
+            this._ctx.drawImage(gameOver, 100, 100)
+
         }
     }
 
