@@ -1,10 +1,11 @@
 import { Position } from './position';
 import { IGameObject } from './game_object';
-import { IObserver } from '../general/observer';
+import { IObserver } from '../lib/observer';
 import { Collision } from './collision';
 import { CollisionManager } from './collisionManager';
 import { Ball } from './ball';
-import { Sprite } from '../general/sprite';
+import { Sprite } from '../lib/sprite';
+import { ArkanoidGame } from '../arkanoid';
 
 let ARROW_MAP = {
     37: 'left',
@@ -23,7 +24,9 @@ export class Player extends IGameObject implements IObserver {
 
     public static readonly _spriteY = 111;
 
-    public static readonly _speed = 15;
+    public static readonly _speed = 6;
+
+    protected _gameContext: ArkanoidGame;
 
     protected _ctx;
 
@@ -31,8 +34,9 @@ export class Player extends IGameObject implements IObserver {
 
     protected _collisionManager: CollisionManager;
 
-    constructor(ctx, cm: CollisionManager, position: Position) {
+    constructor(gameContext: ArkanoidGame, ctx, cm: CollisionManager, position: Position) {
         super();
+        this._gameContext = gameContext;
         this._ctx = ctx;
         this._posStart = position;
         this._color = 'orange';
@@ -41,25 +45,22 @@ export class Player extends IGameObject implements IObserver {
         this._width = Player._width;
         this._collisionManager = cm;
         this._collisionManager.registerObserver(this);
-        document.addEventListener('keydown', this.move.bind(this));
+        // document.addEventListener('keydown', this.move.bind(this));
+        document.addEventListener('keydown', (e) => {
+            this._gameContext._keyState[e.keyCode] = true;
+        });
+        document.addEventListener('keyup', (e) => {
+            this._gameContext._keyState[e.keyCode] = false;
+        });
+    }
+
+    get speed() {
+        return this._speed;
     }
 
     draw() {
         let sprite = new Sprite(this._ctx, '../resources/arkanoid_sprite.png', this._posStart, new Position(this._width, this._height), new Position(Player._spriteX, Player._spriteY));
         sprite.render();
-    }
-
-    move(e) {
-
-        let arrow = ARROW_MAP[e.keyCode];
-
-        if (arrow === 'left') {
-            this._posStart.x -= this._speed;
-        }
-        if (arrow === 'right') {
-            this._posStart.x += this._speed;
-        }
-
     }
 
     getTopLeftCornerPosition() {

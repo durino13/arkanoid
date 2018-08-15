@@ -17,6 +17,14 @@ export abstract class IGameObject {
     get height() {
         return this._height;
     }
+
+    get posStart() {
+        return this._posStart;
+    }
+
+    set posStart(posStart: Position) {
+        this._posStart = posStart;
+    }
     
     /*
     |--------------------------------------------------------------------------

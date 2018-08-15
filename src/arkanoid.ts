@@ -5,6 +5,8 @@ import { Playground } from './model/playground';
 import { World } from './model/world';
 import { Wall, Obstacle, BottomWall } from './model/obstacle';
 import { CollisionManager } from './model/collisionManager';
+import { LevelLoader } from './lib/levelLoader';
+import { IGameObject } from './model/game_object';
 
 export class ArkanoidGame {
 
@@ -28,11 +30,14 @@ export class ArkanoidGame {
 
     protected _collisionManager: CollisionManager;
 
+    public _keyState = {};
+
     constructor() {
-        this.init();
+        this.initBasicObjects();
     }
 
-    init() {
+    initBasicObjects() {
+
         // Create the canvas
         this._canvas = document.getElementById("arkanoidCanvas");
         this._canvas.style.background = "url('resources/background.jpg')";
@@ -50,7 +55,7 @@ export class ArkanoidGame {
 
         // Player position
         let playerPos = new Position(this._canvas.width / 2 - Player._width / 2, this._canvas.height - Player._height);
-        this._player = new Player(this._ctx, this._collisionManager, playerPos);
+        this._player = new Player(this, this._ctx, this._collisionManager, playerPos);
 
         // Ball object
         let ballPos = new Position(Playground.getCenterWidth(), Playground._height - Player._height - Ball._radius);
@@ -74,11 +79,39 @@ export class ArkanoidGame {
         this._world.addObject(this._obstacleTop);
         this._world.addObject(this._obstacleLeft);
         this._world.addObject(this._obstacleRight);
-        this._world.addObjects(Playground.getBricks(this._ctx, this._collisionManager));
         this._world.addObject(this._ball);
+
+    }
+
+    loadLevel() {
+        let levelLoader = new LevelLoader();
+        return levelLoader.readLevelDefinition(1)
+            .then((gameObjects) => {
+                let obstacles: Array<IGameObject> = [];
+                // Create game objects from definition
+                gameObjects.bricks.forEach((brick) => {
+                    let width = 80;
+                    let height = 20;
+                    obstacles.push(new Obstacle(this._ctx, this._collisionManager, new Position(brick.column * width, brick.row * height ), new Position(brick.column * width + width, brick.row * height + height)));
+                });
+                // throw new Error();
+                this._world.addObjects(obstacles);
+            })
+    }
+
+    get world() {
+        return this._world;
     }
 
     play() {
+
+        if (this._keyState[37]) {
+            this._player.posStart.x -= this._player.speed;
+        }
+
+        if (this._keyState[39]) {
+            this._player.posStart.x += this._player.speed;
+        }
 
         // Clear the _canvas first
         this.clear();

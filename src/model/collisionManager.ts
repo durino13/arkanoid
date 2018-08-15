@@ -1,6 +1,6 @@
 import { IGameObject } from './game_object';
-import { IObservable } from '../general/observable';
-import { IObserver } from '../general/observer';
+import { IObservable } from '../lib/observable';
+import { IObserver } from '../lib/observer';
 import { Collision } from './collision';
 
 export class CollisionManager implements IObservable {

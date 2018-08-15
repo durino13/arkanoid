@@ -1,10 +1,10 @@
 import { IGameObject } from './game_object';
 import { Position } from './position';
-import { IObserver } from '../general/observer';
+import { IObserver } from '../lib/observer';
 import { Collision } from './collision';
 import { CollisionManager } from './collisionManager';
 import { World } from './world';
-import { Sprite } from '../general/sprite';
+import { Sprite } from '../lib/sprite';
 
 export class Obstacle extends IGameObject implements IObserver {
 

@@ -3,8 +3,8 @@ import { Collision } from './collision';
 import { IGameObject } from './game_object';
 import { World } from './world';
 import { CollisionManager } from './collisionManager';
-import { IObserver } from '../general/observer';
-import { Sprite } from '../general/sprite';
+import { IObserver } from '../lib/observer';
+import { Sprite } from '../lib/sprite';
 
 export class Ball extends IGameObject implements IObserver{
 

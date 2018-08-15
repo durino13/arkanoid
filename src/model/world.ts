@@ -1,5 +1,5 @@
 import { IGameObject } from './game_object';
-import { IObserver } from '../general/observer';
+import { IObserver } from '../lib/observer';
 import { Collision } from './collision';
 import { CollisionManager } from './collisionManager';
 import { Ball } from './ball';
