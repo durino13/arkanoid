@@ -3,10 +3,11 @@ import { Position } from './model/position';
 import { Ball } from './model/ball';
 import { Playground } from './model/playground';
 import { World } from './model/world';
-import { Wall, Obstacle, BottomWall } from './model/obstacle';
+import { Wall, Obstacle, BottomWall, Brick, Stone } from './model/obstacle';
 import { CollisionManager } from './model/collisionManager';
 import { LevelLoader } from './lib/levelLoader';
 import { IGameObject } from './model/game_object';
+import { BrickFactory } from './lib/brickFactory';
 
 export class ArkanoidGame {
 
@@ -87,14 +88,16 @@ export class ArkanoidGame {
         let levelLoader = new LevelLoader();
         return levelLoader.readLevelDefinition(1)
             .then((gameObjects) => {
+
                 let obstacles: Array<IGameObject> = [];
+
                 // Create game objects from definition
                 gameObjects.bricks.forEach((brick) => {
-                    let width = 80;
-                    let height = 20;
-                    obstacles.push(new Obstacle(this._ctx, this._collisionManager, new Position(brick.column * width, brick.row * height ), new Position(brick.column * width + width, brick.row * height + height)));
+                    let brickFactory = new BrickFactory();
+                    let obj = brickFactory.createBrick(this._ctx, this._collisionManager, brick);
+                    obstacles.push(obj);
                 });
-                // throw new Error();
+
                 this._world.addObjects(obstacles);
             })
     }
@@ -105,13 +108,8 @@ export class ArkanoidGame {
 
     play() {
 
-        if (this._keyState[37]) {
-            this._player.posStart.x -= this._player.speed;
-        }
-
-        if (this._keyState[39]) {
-            this._player.posStart.x += this._player.speed;
-        }
+        // Handle player movement
+        this.handlePlayerMovement();
 
         // Clear the _canvas first
         this.clear();
@@ -121,6 +119,16 @@ export class ArkanoidGame {
 
         // Request next frame
         requestAnimationFrame(this.play.bind(this));
+    }
+
+    handlePlayerMovement() {
+        if (this._keyState[37]) {
+            this._player.posStart.x -= this._player.speed;
+        }
+
+        if (this._keyState[39]) {
+            this._player.posStart.x += this._player.speed;
+        }
     }
 
     clear() {

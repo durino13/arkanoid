@@ -3,7 +3,7 @@ import { IObserver } from '../lib/observer';
 import { Collision } from './collision';
 import { CollisionManager } from './collisionManager';
 import { Ball } from './ball';
-import { Wall } from './obstacle';
+import { Stone, Wall } from './obstacle';
 import { Player } from './player';
 
 export class World implements IObserver {
@@ -37,9 +37,7 @@ export class World implements IObserver {
 
     draw() {
         if (!this._gameOver) {
-            this._gameObjects.forEach(function(object) {
-                object.draw();
-            })
+            this._gameObjects.forEach(object => object.draw())
         } else {
             let gameOver = new Image();
             gameOver.src = 'resources/game_over.png';
@@ -64,8 +62,9 @@ export class World implements IObserver {
      */
     protected isProtected(indexOfObjectFound: number) {
         return (!(this._gameObjects[indexOfObjectFound] instanceof Ball)
-            && !(this._gameObjects[indexOfObjectFound] instanceof Wall))
-            && !(this._gameObjects[indexOfObjectFound] instanceof Player);
+            && !(this._gameObjects[indexOfObjectFound] instanceof Wall)
+            && !(this._gameObjects[indexOfObjectFound] instanceof Player)
+                && !(this._gameObjects[indexOfObjectFound] instanceof Stone));
     }
 
     /**

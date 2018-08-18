@@ -4,17 +4,13 @@ import { IGameObject } from './src/model/game_object';
 import { Obstacle } from './src/model/obstacle';
 import { Position } from './src/model/position';
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
 
     let game = new ArkanoidGame();
-    game.loadLevel()
-        .then(() => {
-            let obstacles: Array<IGameObject> = [];
-
-            // Add bricks
-            game.world.addObjects(obstacles);
-
-            game.play();
-        });
+    await game.loadLevel();
+    let obstacles: Array<IGameObject> = [];
+    // Add bricks
+    game.world.addObjects(obstacles);
+    game.play();
 
 }, false);

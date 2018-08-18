@@ -16,9 +16,9 @@ let ARROW_MAP = {
 
 export class Player extends IGameObject implements IObserver {
 
-    public static readonly _width = 97;
+    public static readonly _width = 100;
 
-    public static readonly _height = 25;
+    public static readonly _height = 26;
 
     public static readonly _spriteX = 184;
 
@@ -59,7 +59,7 @@ export class Player extends IGameObject implements IObserver {
     }
 
     draw() {
-        let sprite = new Sprite(this._ctx, '../resources/arkanoid_sprite.png', this._posStart, new Position(this._width, this._height), new Position(Player._spriteX, Player._spriteY));
+        let sprite = new Sprite(this._ctx, '../resources/paddle.png', this._posStart, new Position(this._width, this._height), new Position(0,0));
         sprite.render();
     }
 

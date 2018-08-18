@@ -62,10 +62,10 @@ export class Ball extends IGameObject implements IObserver{
     }
 
     draw() {
-        let sprite = new Sprite(this._ctx, '../resources/arkanoid_sprite.png',
+        let sprite = new Sprite(this._ctx, '../resources/ball.png',
             new Position(this._posStart.x - Ball._radius, this._posStart.y - Ball._radius),
             new Position(this._width, this._height),
-            new Position(Ball._spriteX, Ball._spriteY));
+            new Position(0, 0));
         sprite.render();
         this.move();
     }

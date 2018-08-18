@@ -6,7 +6,7 @@ import { CollisionManager } from './collisionManager';
 import { World } from './world';
 import { Sprite } from '../lib/sprite';
 
-export class Obstacle extends IGameObject implements IObserver {
+export abstract class Obstacle extends IGameObject implements IObserver {
 
     public static readonly _spriteX = 0;
 
@@ -32,12 +32,6 @@ export class Obstacle extends IGameObject implements IObserver {
         this._width = this._posEnd.x - this._posStart.x;
     }
 
-    draw() {
-        // The obstacle is invisible
-        this._ctx.fillStyle = this._color;
-        this._ctx.fillRect(this._posStart.x, this._posStart.y, this.width, this.height);
-    }
-
     getTopLeftCornerPosition() {
         return new Position(this._posStart.x, this._posStart.y);
     }
@@ -46,9 +40,28 @@ export class Obstacle extends IGameObject implements IObserver {
         // No implementation ..
     }
 
+    abstract draw();
+
 }
 
 export class Wall extends Obstacle {
+    draw(){}
+}
+
+export class Brick extends Obstacle {
+    draw() {
+        // The obstacle is invisible
+        let sprite = new Sprite(this._ctx, 'resources/brick.png', new Position(this._posStart.x,this._posStart.y), new Position(80, 27), new Position(0,0));
+        sprite.render();
+    }
+}
+
+export class Stone extends Obstacle {
+    draw() {
+        // The obstacle is invisible
+        let sprite = new Sprite(this._ctx, 'resources/stone.png', new Position(this._posStart.x,this._posStart.y), new Position(80, 27), new Position(0,0));
+        sprite.render();
+    }
 }
 
 export class BottomWall extends Obstacle {
@@ -65,5 +78,7 @@ export class BottomWall extends Obstacle {
             this._world.gameOver = true;
         }
     }
+
+    draw() {}
 
 }
