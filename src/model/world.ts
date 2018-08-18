@@ -35,15 +35,33 @@ export class World implements IObserver {
         return this._gameObjects;
     }
 
+    levelCompleted() {
+        return this._gameObjects.length === 6;
+    }
+
     draw() {
         if (!this._gameOver) {
-            this._gameObjects.forEach(object => object.draw())
+            console.log(this._gameObjects.length)
+            if (this.levelCompleted()) {
+                this.renderNextLevelImage()
+            } else {
+                this._gameObjects.forEach(object => object.draw())
+            }
         } else {
-            let gameOver = new Image();
-            gameOver.src = 'resources/game_over.png';
-            this._ctx.drawImage(gameOver, 100, 100)
-
+            this.renderGameOverImage();
         }
+    }
+
+    private renderGameOverImage() {
+        let gameOver = new Image();
+        gameOver.src = 'resources/game_over.png';
+        this._ctx.drawImage(gameOver, 80, 300)
+    }
+
+    private renderNextLevelImage() {
+        let nextLevel = new Image();
+        nextLevel.src = 'resources/next_level.png';
+        this._ctx.drawImage(nextLevel, 150, 200)
     }
 
     onCollision(collision: Collision) {
