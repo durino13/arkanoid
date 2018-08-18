@@ -5,6 +5,7 @@ import { CollisionManager } from './collisionManager';
 import { Ball } from './ball';
 import { Stone, Wall } from './obstacle';
 import { Player } from './player';
+import { Playground } from './playground';
 
 export class World implements IObserver {
 
@@ -40,8 +41,13 @@ export class World implements IObserver {
     }
 
     draw() {
+
+        let level = 1;
+        this._ctx.font="20px Arial";
+        this._ctx.fillStyle = 'white';
+        this._ctx.fillText("Level " + level, Playground._width - 80, 30);
+
         if (!this._gameOver) {
-            console.log(this._gameObjects.length)
             if (this.levelCompleted()) {
                 this.renderNextLevelImage()
             } else {
