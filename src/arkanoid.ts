@@ -8,6 +8,7 @@ import { CollisionManager } from './model/collisionManager';
 import { LevelLoader } from './lib/levelLoader';
 import { IGameObject } from './model/game_object';
 import { BrickFactory } from './lib/brickFactory';
+import { Text } from './model/text';
 
 export class ArkanoidGame {
 
@@ -30,6 +31,8 @@ export class ArkanoidGame {
     protected _obstacleRight: Obstacle;
 
     protected _collisionManager: CollisionManager;
+
+    protected _levelInfo: Text;
 
     public _keyState = {};
 
@@ -74,6 +77,9 @@ export class ArkanoidGame {
         // Screen bottom
         this._obstacleBottom = new BottomWall(this._ctx, this._collisionManager, new Position(0, Playground._height - 1), new Position(Playground._width, Playground._height - 1), 'red', this._world);
 
+        this._levelInfo = new Text(this._ctx, new Position(Playground._width - 80, 30));
+        this._levelInfo.text = 'Level 1';
+
         // Add objects into the world
         this._world.addObject(this._player);
         this._world.addObject(this._obstacleBottom);
@@ -81,6 +87,7 @@ export class ArkanoidGame {
         this._world.addObject(this._obstacleLeft);
         this._world.addObject(this._obstacleRight);
         this._world.addObject(this._ball);
+        this._world.addObject(this._levelInfo);
 
     }
 

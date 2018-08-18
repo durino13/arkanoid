@@ -41,12 +41,7 @@ export class World implements IObserver {
     }
 
     draw() {
-
-        let level = 1;
-        this._ctx.font="20px Arial";
-        this._ctx.fillStyle = 'white';
-        this._ctx.fillText("Level " + level, Playground._width - 80, 30);
-
+        
         if (!this._gameOver) {
             if (this.levelCompleted()) {
                 this.renderNextLevelImage()
