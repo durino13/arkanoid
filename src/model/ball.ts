@@ -3,10 +3,11 @@ import { Collision } from './collision';
 import { IGameObject } from './game_object';
 import { World } from './world';
 import { CollisionManager } from './collisionManager';
-import { IObserver } from '../lib/observer';
 import { Sprite } from '../lib/sprite';
+import { ArkanoidGame } from '../arkanoid';
+import { Event } from '../lib/eventEmitter';
 
-export class Ball extends IGameObject implements IObserver{
+export class Ball extends IGameObject {
 
     protected static readonly _spriteX = 32;
 
@@ -19,6 +20,8 @@ export class Ball extends IGameObject implements IObserver{
     public static readonly _radius = 12.5;
 
     protected _ctx;
+
+    protected _gameContext;
 
     protected _speed;
 
@@ -34,10 +37,11 @@ export class Ball extends IGameObject implements IObserver{
 
     protected _angleAdjustment;
 
-    constructor(ctx, collisionManager: CollisionManager, position: Position, world: World) {
+    constructor(ctx, gc: ArkanoidGame, collisionManager: CollisionManager, position: Position, world: World) {
         super();
+        this._gameContext = gc;
         this._collisionManager = collisionManager;
-        this._collisionManager.registerObserver(this);
+        this._gameContext._eventEmitter.registerObserver(this);
         this._ctx = ctx;
         this._posStart = position;
         this._color = 'blue';
@@ -76,8 +80,8 @@ export class Ball extends IGameObject implements IObserver{
      */
     calculateAngle(angle, side) {
 
-        console.log(side);
-        console.log('Lopta dopadla pod uhlom: ' + angle);
+        // console.log(side);
+        // console.log('Lopta dopadla pod uhlom: ' + angle);
 
         let outputAngle = 0;
 
@@ -136,8 +140,10 @@ export class Ball extends IGameObject implements IObserver{
             if(!(gameObject instanceof Ball)) {
                 let collision = this._collisionManager.determineCollision(this, gameObject);
                 if (collision !== false) {
-                    this._collisionManager.notifyObservers(collision);
-                    this._collisionManager.lastCollisionSide = collision.collisionSide;
+
+                    this._gameContext.eventEmitter.emit(new Event(Event.EVENT_ON_COLLISION), collision);
+                    // this._collisionManager.notifyObservers(collision);
+                    // this._collisionManager.lastCollisionSide = collision.collisionSide;
                 }
             }
 
@@ -168,10 +174,12 @@ export class Ball extends IGameObject implements IObserver{
     |
     */
 
-    onCollision(collision: Collision) {
-        this._angle = this.calculateAngle(this._angle, collision.collisionSide);
-        console.log('Ball new angle: ' + this._angle);
-        console.log('Angle adjusted by: ' + this._angleAdjustment);
+    onEvent(event: Event, collision: Collision) {
+        if (event.name === Event.EVENT_ON_COLLISION) {
+            this._angle = this.calculateAngle(this._angle, collision.collisionSide);
+            // console.log('Ball new angle: ' + this._angle);
+            // console.log('Angle adjusted by: ' + this._angleAdjustment);
+        }
     }
 
 }

@@ -1,5 +1,5 @@
-import { Collision } from '../model/collision';
+import { Event } from '../lib/eventEmitter';
 
 export interface IObserver {
-    onCollision(collision: Collision);
+    onEvent(name: Event, data: any);
 }

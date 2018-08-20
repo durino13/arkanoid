@@ -3,12 +3,13 @@ import { Position } from './model/position';
 import { Ball } from './model/ball';
 import { Playground } from './model/playground';
 import { World } from './model/world';
-import { Wall, Obstacle, BottomWall, Brick, Stone } from './model/obstacle';
+import { Wall, Obstacle, BottomWall } from './model/obstacle';
 import { CollisionManager } from './model/collisionManager';
 import { LevelLoader } from './lib/levelLoader';
 import { IGameObject } from './model/game_object';
 import { BrickFactory } from './lib/brickFactory';
 import { Text } from './model/text';
+import { Event, EventEmitter } from './lib/eventEmitter';
 
 export class ArkanoidGame {
 
@@ -16,6 +17,7 @@ export class ArkanoidGame {
 
     protected _ctx;
 
+    // TODO Pass game object instead of partial objects
     protected _world;
 
     protected _player: Player;
@@ -36,12 +38,11 @@ export class ArkanoidGame {
 
     public _keyState = {};
 
+    protected _currentLevel;
+
+    protected _eventEmitter;
+
     constructor() {
-        this.initBasicObjects();
-    }
-
-    initBasicObjects() {
-
         // Create the canvas
         this._canvas = document.getElementById("arkanoidCanvas");
         this._canvas.style.background = "url('resources/background.jpg')";
@@ -54,8 +55,21 @@ export class ArkanoidGame {
         // Create collision manager
         this._collisionManager = new CollisionManager();
 
+        // Event emitter
+        this._eventEmitter = new EventEmitter();
+
         // Create the world
-        this._world = new World(this._ctx, this._collisionManager);
+        this._world = new World(this._ctx, this, this._collisionManager);
+
+        // Init current level
+        this._currentLevel = 1;
+
+        this.eventEmitter.registerObserver(this);
+    }
+
+    initBasicObjects() {
+
+        this._world._gameObjects = [];
 
         // Player position
         let playerPos = new Position(this._canvas.width / 2 - Player._width / 2, this._canvas.height - Player._height);
@@ -63,19 +77,19 @@ export class ArkanoidGame {
 
         // Ball object
         let ballPos = new Position(Playground.getCenterWidth(), Playground._height - Player._height - Ball._radius);
-        this._ball = new Ball(this._ctx, this._collisionManager, ballPos, this._world);
+        this._ball = new Ball(this._ctx, this, this._collisionManager, ballPos, this._world);
 
         // Screen top border
-        this._obstacleTop = new Wall(this._ctx, this._collisionManager, new Position(0, 0), new Position(Playground._width, 10));
+        this._obstacleTop = new Wall(this._ctx, this, this._collisionManager, new Position(0, 0), new Position(Playground._width, 10));
 
         // Wall left
-        this._obstacleLeft = new Wall(this._ctx, this._collisionManager, new Position(0, 0), new Position(10, Playground._height));
+        this._obstacleLeft = new Wall(this._ctx, this, this._collisionManager, new Position(0, 0), new Position(10, Playground._height));
 
         // Wall right
-        this._obstacleRight = new Wall(this._ctx, this._collisionManager, new Position(Playground._width - 10, 0), new Position(Playground._width, Playground._height));
+        this._obstacleRight = new Wall(this._ctx, this, this._collisionManager, new Position(Playground._width - 10, 0), new Position(Playground._width, Playground._height));
 
         // Screen bottom
-        this._obstacleBottom = new BottomWall(this._ctx, this._collisionManager, new Position(0, Playground._height - 1), new Position(Playground._width, Playground._height - 1), 'red', this._world);
+        this._obstacleBottom = new BottomWall(this._ctx, this, this._collisionManager, new Position(0, Playground._height - 1), new Position(Playground._width, Playground._height - 1), 'red', this._world);
 
         this._levelInfo = new Text(this._ctx, new Position(Playground._width - 80, 30));
         this._levelInfo.text = 'Level 1';
@@ -91,9 +105,16 @@ export class ArkanoidGame {
 
     }
 
-    loadLevel() {
+    loadLevel(level: number) {
+
+        console.log('Loading level ' + level);
+
+        // First init common game objects
+        this.initBasicObjects();
+
+        // Then load level specific objects ..
         let levelLoader = new LevelLoader();
-        return levelLoader.readLevelDefinition(1)
+        return levelLoader.readLevelDefinition(level)
             .then((gameObjects) => {
 
                 let obstacles: Array<IGameObject> = [];
@@ -101,7 +122,7 @@ export class ArkanoidGame {
                 // Create game objects from definition
                 gameObjects.bricks.forEach((brick) => {
                     let brickFactory = new BrickFactory();
-                    let obj = brickFactory.createBrick(this._ctx, this._collisionManager, brick);
+                    let obj = brickFactory.createBrick(this._ctx, this, this._collisionManager, brick);
                     obstacles.push(obj);
                 });
 
@@ -113,10 +134,14 @@ export class ArkanoidGame {
         return this._world;
     }
 
+    get eventEmitter() {
+        return this._eventEmitter;
+    }
+
     play() {
 
         // Handle player movement
-        this.handlePlayerMovement();
+        this.handleKeyStrokes();
 
         // Clear the _canvas first
         this.clear();
@@ -128,7 +153,8 @@ export class ArkanoidGame {
         requestAnimationFrame(this.play.bind(this));
     }
 
-    handlePlayerMovement() {
+    handleKeyStrokes() {
+
         if (this._keyState[37]) {
             this._player.posStart.x -= this._player.speed;
         }
@@ -136,10 +162,27 @@ export class ArkanoidGame {
         if (this._keyState[39]) {
             this._player.posStart.x += this._player.speed;
         }
+
+        // if (this._keyState[32]) {
+        //     this._eventEmitter.emit(new Event(Event.EVENT_SPACEBAR_PRESS));
+        // }
     }
 
     clear() {
         this._ctx.clearRect(0, 0, this._canvas.width, this._canvas.height);
+    }
+
+    onEvent(event: Event, data: any) {
+
+        if (event.name === Event.EVENT_SPACEBAR_PRESS) {
+            if (this.world.isPaused) {
+                this.loadLevel(2).then(() => {
+                    // Continue the game ..
+                    this.world.paused = false;
+                })
+            }
+        }
+
     }
 
 }

@@ -5,6 +5,8 @@ import { Collision } from './collision';
 import { CollisionManager } from './collisionManager';
 import { World } from './world';
 import { Sprite } from '../lib/sprite';
+import { ArkanoidGame } from '../arkanoid';
+import { Event } from '../lib/eventEmitter';
 
 export abstract class Obstacle extends IGameObject implements IObserver {
 
@@ -14,17 +16,20 @@ export abstract class Obstacle extends IGameObject implements IObserver {
 
     protected _ctx;
 
+    protected _gameContext;
+
     protected _posStart;
 
     protected _posEnd;
 
     protected _collisionManager;
 
-    constructor(ctx, collisionManager: CollisionManager, posStart: Position, posEnd: Position, color: string = 'blue') {
+    constructor(ctx, gc: ArkanoidGame, collisionManager: CollisionManager, posStart: Position, posEnd: Position, color: string = 'blue') {
         super();
         this._collisionManager = collisionManager;
-        this._collisionManager.registerObserver(this);
         this._ctx = ctx;
+        this._gameContext = gc;
+        this._gameContext._eventEmitter.registerObserver(this);
         this._posStart = posStart;
         this._posEnd = posEnd;
         this._color = color;
@@ -36,7 +41,7 @@ export abstract class Obstacle extends IGameObject implements IObserver {
         return new Position(this._posStart.x, this._posStart.y);
     }
 
-    onCollision(collision: Collision) {
+    onEvent(name, collision: Collision) {
         // No implementation ..
     }
 
@@ -68,14 +73,16 @@ export class BottomWall extends Obstacle {
 
     protected _world;
 
-    constructor(ctx, collisionManager: CollisionManager, posStart: Position, posEnd: Position, color: string = 'red', world: World) {
-        super(ctx, collisionManager, posStart, posEnd, color);
+    constructor(ctx, gc: ArkanoidGame, collisionManager: CollisionManager, posStart: Position, posEnd: Position, color: string = 'red', world: World) {
+        super(ctx, gc, collisionManager, posStart, posEnd, color);
         this._world = world;
     }
 
-    onCollision(collision: Collision) {
-        if (collision.collisionObject2 === this) {
-            this._world.gameOver = true;
+    onEvent(event: Event, collision: Collision) {
+        if (event.name === Event.EVENT_ON_COLLISION) {
+            if (collision.collisionObject2 === this) {
+                this._world.gameOver = true;
+            }
         }
     }
 

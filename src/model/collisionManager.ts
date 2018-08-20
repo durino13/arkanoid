@@ -1,11 +1,7 @@
 import { IGameObject } from './game_object';
-import { IObservable } from '../lib/observable';
-import { IObserver } from '../lib/observer';
 import { Collision } from './collision';
 
-export class CollisionManager implements IObservable {
-
-    protected observers: Array<IObserver> = [];
+export class CollisionManager {
 
     protected _lastCollisionSide;
 
@@ -25,7 +21,7 @@ export class CollisionManager implements IObservable {
 
         if ( c1 && c2 && c3 && c4) {
 
-            console.log('------------------------------------');
+            // console.log('------------------------------------');
 
             let position;
 
@@ -33,7 +29,7 @@ export class CollisionManager implements IObservable {
 
             // G1
             if ((object1.getTopLeftCornerPosition().x < object2.getTopLeftCornerPosition().x) && (object1.getTopLeftCornerPosition().y < object2.getTopLeftCornerPosition().y)) {
-                console.log('G1');
+                // console.log('G1');
                 dx = (object1.getTopLeftCornerPosition().x + object1.width - object2.getTopLeftCornerPosition().x);
                 dy = (object1.getTopLeftCornerPosition().y + object1.height - object2.getTopLeftCornerPosition().y);
 
@@ -46,13 +42,13 @@ export class CollisionManager implements IObservable {
 
             // G2
             if ((object1.getTopLeftCornerPosition().x > object2.getTopLeftCornerPosition().x) && ((object1.getTopLeftCornerPosition().x + object1.width) < (object2.getTopLeftCornerPosition().x + object2.width)) && (object1.getTopLeftCornerPosition().y < object2.getTopLeftCornerPosition().y)) {
-                console.log('G2');
+                // console.log('G2');
                 position = Collision.SIDE_TOP;
             }
 
             // G3
             if ((object1.getTopLeftCornerPosition().x < object2.getTopLeftCornerPosition().x + object2.width) && (object1.getTopLeftCornerPosition().x + object1.width) > (object2.getTopLeftCornerPosition().x + object2.width) && (object1.getTopLeftCornerPosition().y < object2.getTopLeftCornerPosition().y)) {
-                console.log('G3');
+                // console.log('G3');
                 dx = ((object2.getTopLeftCornerPosition().x + object2.width) - object1.getTopLeftCornerPosition().x);
                 dy = ((object1.getTopLeftCornerPosition().y + object1.height) - object2.getTopLeftCornerPosition().y);
 
@@ -65,13 +61,13 @@ export class CollisionManager implements IObservable {
 
             // G4
             if ((object1.getTopLeftCornerPosition().y > object2.getTopLeftCornerPosition().y) && ((object1.getTopLeftCornerPosition().y + object1.height) < (object2.getTopLeftCornerPosition().y + object2.height)) && (object1.getTopLeftCornerPosition().x > object2.getTopLeftCornerPosition().x)) {
-                console.log('G4');
+                // console.log('G4');
                 position = Collision.SIDE_RIGHT;
             }
 
             // G5
             if ((object1.getTopLeftCornerPosition().x < object2.getTopLeftCornerPosition().x + object2.width) && (object1.getTopLeftCornerPosition().y < object2.getTopLeftCornerPosition().y + object2.height) && (object1.getTopLeftCornerPosition().y + object1.height > object2.getTopLeftCornerPosition().y + object2.height) && (object1.getTopLeftCornerPosition().x + object1.width > object2.getTopLeftCornerPosition().x + object2.width)) {
-                console.log('G5');
+                // console.log('G5');
                 dx = (object2.getTopLeftCornerPosition().x + object2.width) - object1.getTopLeftCornerPosition().x;
                 dy = (object2.getTopLeftCornerPosition().y + object2.height) - object1.getTopLeftCornerPosition().x;
 
@@ -84,13 +80,13 @@ export class CollisionManager implements IObservable {
 
             // G6
             if ((object1.getTopLeftCornerPosition().x > object2.getTopLeftCornerPosition().x) && ((object1.getTopLeftCornerPosition().x + object1.width) < (object2.getTopLeftCornerPosition().x + object2.width)) && (object1.getTopLeftCornerPosition().y > object2.getTopLeftCornerPosition().y)) {
-                console.log('G6');
+                // console.log('G6');
                 position = Collision.SIDE_BOTTOM;
             }
 
             // G7
             if ((object1.getTopLeftCornerPosition().x < object2.getTopLeftCornerPosition().x) && (object1.getTopLeftCornerPosition().y < object2.getTopLeftCornerPosition().y + object2.height) && (object1.getTopLeftCornerPosition().y + object1.height > object2.getTopLeftCornerPosition().y + object2.height)) {
-                console.log('G7');
+                // console.log('G7');
                 dx = (object1.getTopLeftCornerPosition().x + object1.width) - object2.getTopLeftCornerPosition().x;
                 dy = (object1.getTopLeftCornerPosition().y + object1.height) - object2.getTopLeftCornerPosition().y;
 
@@ -104,7 +100,7 @@ export class CollisionManager implements IObservable {
 
             // G8
             if (((object1.getTopLeftCornerPosition().x < object2.getTopLeftCornerPosition().x) && ((object1.getTopLeftCornerPosition().x + object1.width) > object2.getTopLeftCornerPosition().x)) && (object1.getTopLeftCornerPosition().y > object2.getTopLeftCornerPosition().y) && ((object1.getTopLeftCornerPosition().y + object1.height < object2.getTopLeftCornerPosition().y + object2.height))) {
-                console.log('G8');
+                // console.log('G8');
                 position = Collision.SIDE_LEFT;
             }
 
@@ -112,7 +108,7 @@ export class CollisionManager implements IObservable {
             if (this._lastCollisionSide !== position) {
                 return new Collision(object1, object2, position);
             } else {
-                console.log('Skipping collision ...')
+                // console.log('Skipping collision ...')
             }
 
         }
@@ -123,16 +119,6 @@ export class CollisionManager implements IObservable {
 
     set lastCollisionSide(lastCollisionSide: string) {
         this._lastCollisionSide = lastCollisionSide;
-    }
-
-    public notifyObservers(collision: Collision) {
-        this.observers.forEach((observer) => {
-            observer.onCollision(collision);
-        });
-    }
-
-    public registerObserver(observer: IObserver) {
-        this.observers.push(observer);
     }
 
 }
