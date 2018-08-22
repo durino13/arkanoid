@@ -65,6 +65,19 @@ export class ArkanoidGame {
         this._currentLevel = 1;
 
         this.eventEmitter.registerObserver(this);
+
+        document.addEventListener('keydown', (e) => {
+            this._keyState[e.keyCode] = true;
+        });
+        document.addEventListener('keyup', (e) => {
+            this._keyState[e.keyCode] = false;
+
+            // if Spacebar was pressed, emit the event ..
+            if (e.keyCode === 32) {
+                this.eventEmitter.emit(new Event(Event.EVENT_SPACEBAR_PRESS));
+            }
+        });
+
     }
 
     initBasicObjects() {
@@ -107,7 +120,7 @@ export class ArkanoidGame {
 
     loadLevel(level: number) {
 
-        console.log('Loading level ' + level);
+        // console.log('Loading level ' + level);
 
         // First init common game objects
         this.initBasicObjects();
@@ -174,7 +187,10 @@ export class ArkanoidGame {
 
     onEvent(event: Event, data: any) {
 
+        // TODO Treti a stvrty level mi loaduje naraz ..
+
         if (event.name === Event.EVENT_SPACEBAR_PRESS) {
+
             if (this.world.isPaused) {
                 this._currentLevel = this._currentLevel + 1;
                 this.loadLevel(this._currentLevel).then(() => {

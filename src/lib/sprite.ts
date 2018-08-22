@@ -4,6 +4,8 @@ export class Sprite {
 
     protected _ctx;
 
+    protected _img;
+
     protected _url;
 
     protected _pos: Position;
@@ -18,14 +20,14 @@ export class Sprite {
         this._pos = pos;
         this._size = size;
         this._spriteLocation = spriteLocation;
+
+        this._img = new Image();
+        this._img.src = this._url;
     }
 
     render() {
 
-        let img = new Image();
-        img.src = this._url;
-
-        this._ctx.drawImage(img,
+        this._ctx.drawImage(this._img,
             this._spriteLocation.x, this._spriteLocation.y,
             this._size.x, this._size.y,
             this._pos.x, this._pos.y,

@@ -22,7 +22,7 @@ export class CollisionManager {
 
         if ( c1 && c2 && c3 && c4) {
 
-            console.log('------------------------------------');
+            // console.log('------------------------------------');
 
             let collisionSide;
 
@@ -30,7 +30,7 @@ export class CollisionManager {
 
             // G1
             if ((object1.getTopLeftCornerPosition().x < object2.getTopLeftCornerPosition().x) && (object1.getTopLeftCornerPosition().y < object2.getTopLeftCornerPosition().y)) {
-                console.log('G1');
+                // console.log('G1');
                 dx = (object1.getTopLeftCornerPosition().x + object1.width - object2.getTopLeftCornerPosition().x);
                 dy = (object1.getTopLeftCornerPosition().y + object1.height - object2.getTopLeftCornerPosition().y);
 
@@ -43,13 +43,13 @@ export class CollisionManager {
 
             // G2
             if ((object1.getTopLeftCornerPosition().x > object2.getTopLeftCornerPosition().x) && ((object1.getTopLeftCornerPosition().x + object1.width) < (object2.getTopLeftCornerPosition().x + object2.width)) && (object1.getTopLeftCornerPosition().y < object2.getTopLeftCornerPosition().y)) {
-                console.log('G2');
+                // console.log('G2');
                 collisionSide = Collision.SIDE_TOP;
             }
 
             // G3
             if ((object1.getTopLeftCornerPosition().x < object2.getTopLeftCornerPosition().x + object2.width) && (object1.getTopLeftCornerPosition().x + object1.width) > (object2.getTopLeftCornerPosition().x + object2.width) && (object1.getTopLeftCornerPosition().y < object2.getTopLeftCornerPosition().y)) {
-                console.log('G3');
+                // console.log('G3');
                 dx = ((object2.getTopLeftCornerPosition().x + object2.width) - object1.getTopLeftCornerPosition().x);
                 dy = ((object1.getTopLeftCornerPosition().y + object1.height) - object2.getTopLeftCornerPosition().y);
 
@@ -62,13 +62,13 @@ export class CollisionManager {
 
             // G4
             if ((object1.getTopLeftCornerPosition().y > object2.getTopLeftCornerPosition().y) && ((object1.getTopLeftCornerPosition().y + object1.height) < (object2.getTopLeftCornerPosition().y + object2.height)) && (object1.getTopLeftCornerPosition().x > object2.getTopLeftCornerPosition().x)) {
-                console.log('G4');
+                // console.log('G4');
                 collisionSide = Collision.SIDE_RIGHT;
             }
 
             // G5
             if ((object1.getTopLeftCornerPosition().x < object2.getTopLeftCornerPosition().x + object2.width) && (object1.getTopLeftCornerPosition().y < object2.getTopLeftCornerPosition().y + object2.height) && (object1.getTopLeftCornerPosition().y + object1.height > object2.getTopLeftCornerPosition().y + object2.height) && (object1.getTopLeftCornerPosition().x + object1.width > object2.getTopLeftCornerPosition().x + object2.width)) {
-                console.log('G5');
+                // console.log('G5');
                 dx = (object2.getTopLeftCornerPosition().x + object2.width) - object1.getTopLeftCornerPosition().x;
                 dy = (object2.getTopLeftCornerPosition().y + object2.height) - object1.getTopLeftCornerPosition().x;
 
@@ -81,13 +81,13 @@ export class CollisionManager {
 
             // G6
             if ((object1.getTopLeftCornerPosition().x > object2.getTopLeftCornerPosition().x) && ((object1.getTopLeftCornerPosition().x + object1.width) < (object2.getTopLeftCornerPosition().x + object2.width)) && (object1.getTopLeftCornerPosition().y > object2.getTopLeftCornerPosition().y)) {
-                console.log('G6');
+                // console.log('G6');
                 collisionSide = Collision.SIDE_BOTTOM;
             }
 
             // G7
             if ((object1.getTopLeftCornerPosition().x < object2.getTopLeftCornerPosition().x) && (object1.getTopLeftCornerPosition().y < object2.getTopLeftCornerPosition().y + object2.height) && (object1.getTopLeftCornerPosition().y + object1.height > object2.getTopLeftCornerPosition().y + object2.height)) {
-                console.log('G7');
+                // console.log('G7');
                 dx = (object1.getTopLeftCornerPosition().x + object1.width) - object2.getTopLeftCornerPosition().x;
                 dy = (object1.getTopLeftCornerPosition().y + object1.height) - object2.getTopLeftCornerPosition().y;
 
@@ -101,12 +101,12 @@ export class CollisionManager {
 
             // G8
             if (((object1.getTopLeftCornerPosition().x < object2.getTopLeftCornerPosition().x) && ((object1.getTopLeftCornerPosition().x + object1.width) > object2.getTopLeftCornerPosition().x)) && (object1.getTopLeftCornerPosition().y > object2.getTopLeftCornerPosition().y) && ((object1.getTopLeftCornerPosition().y + object1.height < object2.getTopLeftCornerPosition().y + object2.height))) {
-                console.log('G8');
+                // console.log('G8');
                 collisionSide = Collision.SIDE_LEFT;
             }
 
             // Niekedy sa stava, ze kolizia nastava 2x na tej istej hrane, co sa nesmie stat .. Preto preskakujem
-            if (this._lastCollisionSide !== collisionSide) {
+            if (this.isNextCollisionSideAllowed(collisionSide)) {
                 this.lastCollisionSide = collisionSide;
                 return new Collision(object1, object2, collisionSide);
             }
@@ -119,6 +119,10 @@ export class CollisionManager {
 
     set lastCollisionSide(lastCollisionSide: string) {
         this._lastCollisionSide = lastCollisionSide;
+    }
+
+    isNextCollisionSideAllowed(collisionSide) {
+        return this._lastCollisionSide !== collisionSide;
     }
 
 }

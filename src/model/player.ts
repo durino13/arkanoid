@@ -46,17 +46,6 @@ export class Player extends IGameObject implements IObserver {
         this._width = Player._width;
         this._collisionManager = cm;
         this._gameContext.eventEmitter.registerObserver(this);
-        document.addEventListener('keydown', (e) => {
-            this._gameContext._keyState[e.keyCode] = true;
-        });
-        document.addEventListener('keyup', (e) => {
-            this._gameContext._keyState[e.keyCode] = false;
-
-            // if Spacebar was pressed, emit the event ..
-            if (e.keyCode === 32) {
-                this._gameContext.eventEmitter.emit(new Event(Event.EVENT_SPACEBAR_PRESS));
-            }
-        });
     }
 
     get speed() {

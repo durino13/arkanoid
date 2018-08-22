@@ -171,8 +171,8 @@ export class Ball extends IGameObject {
     onEvent(event: Event, collision: Collision) {
         if (event.name === Event.EVENT_ON_COLLISION) {
             this._angle = this.calculateAngle(this._angle, collision.collisionSide);
-            console.log('Ball hit: ' + collision.collisionSide)
-            console.log('New angle after collision: ' + this._angle)
+            // console.log('Ball hit: ' + collision.collisionSide)
+            // console.log('New angle after collision: ' + this._angle)
             // console.log('Angle adjusted by: ' + this._angleAdjustment);
         }
     }
