@@ -80,15 +80,12 @@ export class Ball extends IGameObject {
      */
     calculateAngle(angle, side) {
 
-        // console.log(side);
-        // console.log('Lopta dopadla pod uhlom: ' + angle);
-
         let outputAngle = 0;
 
         // Side top
 
         if (side === Collision.SIDE_TOP && (angle >= 270) && (angle < 360)) {
-            outputAngle = 0 + (360 - angle);
+            outputAngle = 360 - angle;
         }
 
         if (side === Collision.SIDE_TOP && (angle >= 180) && (angle < 270)) {
@@ -140,10 +137,7 @@ export class Ball extends IGameObject {
             if(!(gameObject instanceof Ball)) {
                 let collision = this._collisionManager.determineCollision(this, gameObject);
                 if (collision !== false) {
-
                     this._gameContext.eventEmitter.emit(new Event(Event.EVENT_ON_COLLISION), collision);
-                    // this._collisionManager.notifyObservers(collision);
-                    // this._collisionManager.lastCollisionSide = collision.collisionSide;
                 }
             }
 
@@ -177,7 +171,8 @@ export class Ball extends IGameObject {
     onEvent(event: Event, collision: Collision) {
         if (event.name === Event.EVENT_ON_COLLISION) {
             this._angle = this.calculateAngle(this._angle, collision.collisionSide);
-            // console.log('Ball new angle: ' + this._angle);
+            console.log('Ball hit: ' + collision.collisionSide)
+            console.log('New angle after collision: ' + this._angle)
             // console.log('Angle adjusted by: ' + this._angleAdjustment);
         }
     }

@@ -176,7 +176,8 @@ export class ArkanoidGame {
 
         if (event.name === Event.EVENT_SPACEBAR_PRESS) {
             if (this.world.isPaused) {
-                this.loadLevel(2).then(() => {
+                this._currentLevel = this._currentLevel + 1;
+                this.loadLevel(this._currentLevel).then(() => {
                     // Continue the game ..
                     this.world.paused = false;
                 })
