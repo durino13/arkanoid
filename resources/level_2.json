@@ -1,5 +1,14 @@
 {
   "bricks": [
-    { "type": "brick", "row": 0, "column": 3 }
+    { "type": "brick", "row": 0, "column": 0 },
+    { "type": "brick", "row": 0, "column": 1 },
+    { "type": "brick", "row": 0, "column": 2 },
+    { "type": "brick", "row": 0, "column": 3 },
+    { "type": "brick", "row": 0, "column": 4 },
+    { "type": "brick", "row": 0, "column": 5 },
+    { "type": "brick", "row": 0, "column": 6 },
+    { "type": "brick", "row": 0, "column": 7 },
+    { "type": "brick", "row": 0, "column": 8 },
+    { "type": "brick", "row": 0, "column": 9 }
   ]
 }
