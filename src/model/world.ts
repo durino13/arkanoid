@@ -81,7 +81,7 @@ export class World implements IObserver {
     private renderGameOverImage() {
         let gameOver = new Image();
         gameOver.src = 'resources/game_over.png';
-        this._ctx.drawImage(gameOver, 80, 300)
+        this._ctx.drawImage(gameOver, 200, 300)
     }
 
     private renderNextLevelImage() {

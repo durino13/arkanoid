@@ -4,7 +4,7 @@ import { CollisionManager } from './collisionManager';
 
 export class Playground {
 
-    public static readonly _width = 800;
+    public static readonly _width = 1050;
 
     public static readonly _height = 800;
 

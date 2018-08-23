@@ -105,7 +105,7 @@ export class ArkanoidGame {
         this._obstacleBottom = new BottomWall(this._ctx, this, this._collisionManager, new Position(0, Playground._height - 1), new Position(Playground._width, Playground._height - 1), 'red', this._world);
 
         this._levelInfo = new Text(this._ctx, new Position(Playground._width - 80, 30));
-        this._levelInfo.text = 'Level 1';
+        this._levelInfo.text = 'Level ' + this._currentLevel;
 
         // Add objects into the world
         this._world.addObject(this._player);
