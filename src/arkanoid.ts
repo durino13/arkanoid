@@ -188,8 +188,6 @@ export class ArkanoidGame {
 
     onEvent(event: Event) {
 
-        // TODO Treti a stvrty level mi loaduje naraz ..
-
         if (event.name === Event.EVENT_SPACEBAR_PRESS) {
 
             if (this.world.isPaused) {
