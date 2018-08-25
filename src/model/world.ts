@@ -87,7 +87,7 @@ export class World implements IObserver {
     private renderNextLevelImage() {
         let nextLevel = new Image();
         nextLevel.src = 'resources/next_level.png';
-        this._ctx.drawImage(nextLevel, 150, 200)
+        this._ctx.drawImage(nextLevel, 270, 200)
     }
 
     onEvent(event: Event, collision: Collision) {

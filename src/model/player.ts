@@ -8,13 +8,6 @@ import { Sprite } from '../lib/sprite';
 import { ArkanoidGame } from '../arkanoid';
 import { Event } from '../lib/eventEmitter';
 
-let ARROW_MAP = {
-    37: 'left',
-    40: 'up',
-    39: 'right',
-    38: 'down'
-};
-
 export class Player extends IGameObject implements IObserver {
 
     public static readonly _width = 100;
@@ -63,19 +56,23 @@ export class Player extends IGameObject implements IObserver {
 
     calculateAngleAdjustment(ball: Ball) {
 
+        let resultAngle;
         let ballVsPayerCollisionPointX = ball.getTopLeftCornerPosition().x - this.getTopLeftCornerPosition().x;
+        let angleDistribution = [ 20,15,10,5,0,0,-5,-10,-15,-20 ];
+        let angleDistributionReverse = [ 20,15,10,5,0,0,-5,-10,-15,-20 ];
+        let intervalCount = 10;
+        let intervalSize = Player._width / intervalCount;
+        let intervalStruck = Math.trunc(ballVsPayerCollisionPointX / intervalSize) + 1;
 
-        if ((ball.angle > 180 && ball.angle < 270) && (ballVsPayerCollisionPointX > Player._width / 2)) {
-            // console.log('Adjusting ball angle backwards');
-            return -20;
+        if (ball.angle >= 270 && ball.angle < 360) {
+            resultAngle = angleDistributionReverse[intervalStruck];
         }
 
-        if ((ball.angle > 270 && ball.angle < 360) && (ballVsPayerCollisionPointX < Player._width / 2)) {
-            // console.log('Adjusting ball angle backwards');
-            return 20;
+        if (ball.angle > 180 && ball.angle < 270) {
+            resultAngle = angleDistribution[intervalStruck];
         }
 
-        return 0;
+        return resultAngle;
     }
 
     /*
